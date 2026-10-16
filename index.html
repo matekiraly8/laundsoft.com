@@ -83,7 +83,8 @@ section{padding-block:64px}
 
 /* nav */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav>.wrap{display:flex;align-items:center;gap:22px;height:66px}
+.nav>.wrap:not(.mobile-nav){display:flex;align-items:center;gap:22px;height:66px}
+[id]{scroll-margin-top:calc(var(--navh,72px) + 12px)}
 .nav .menu a.btn{color:var(--btn-fg)}
 .nav .menu a.btn:hover{background:var(--btn-bg)}
 .logo{height:30px;width:auto;color:var(--fg)}
@@ -102,7 +103,7 @@ section{padding-block:64px}
 .nav .mobile-nav{display:none;flex-wrap:wrap;gap:6px;padding-block:8px 10px}
 .fit{width:100%;overflow:hidden}
 .fit>.portal{transform-origin:top left}
-.mobile-nav a{flex:none;text-decoration:none;font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 12px;border:1px solid var(--line);border-radius:999px}
+.mobile-nav a{flex:none;text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);padding:6px 11px;border:1px solid var(--line);border-radius:999px}
 .mobile-nav a.active{color:var(--blue-ink);border-color:var(--blue);background:var(--blue-pale)}
 @media(max-width:760px){.menu a:not(.btn){display:none} .brand .tag{display:none} .nav .mobile-nav{display:flex}}
 
@@ -1149,7 +1150,8 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <button class="btn" type="submit" id="demo-submit">Get in touch</button>
       <p id="demo-ok" hidden role="status" style="margin-top:12px;color:var(--ok-fg);font-size:14px">Thank you, we have your request. We will get back to you with a time slot within one working day.</p>
       <p id="demo-err" hidden role="alert" style="margin-top:12px;color:var(--warn-fg);font-size:14px">Sorry, the form could not be sent. Please e-mail us directly at <a href="mailto:mate.kiraly@neatly.eu" style="color:inherit">mate.kiraly@neatly.eu</a>.</p>
-      <p style="margin-top:12px;font-size:13px;color:var(--muted-2)">or e-mail us: <a class="mono" href="mailto:mate.kiraly@neatly.eu" style="color:var(--fg)">mate.kiraly@neatly.eu</a></p>
+      <p style="margin-top:12px;font-size:12.5px;color:var(--muted-2)">We use your details only to answer your enquiry. See our <a href="/privacy.html" style="color:inherit">privacy policy</a>.</p>
+      <p style="margin-top:6px;font-size:13px;color:var(--muted-2)">or e-mail us: <a class="mono" href="mailto:mate.kiraly@neatly.eu" style="color:var(--fg)">mate.kiraly@neatly.eu</a></p>
     </form>
   </div>
 </section>
@@ -1187,12 +1189,12 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     <svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg>
     <span>Neatly Laundry OS · Textiltech Kft. · Budapest, Hungary</span>
     <a href="mailto:mate.kiraly@neatly.eu" style="text-decoration:none;color:var(--blue-ink)">mate.kiraly@neatly.eu</a>
-    <span style="margin-left:auto">© 2026 Neatly Laundry OS · <a href="https://laundsoft.com" style="color:inherit">laundsoft.com</a> · <button type="button" class="linkbtn" id="consent-open">Cookie settings</button></span>
+    <span style="margin-left:auto">© 2026 Neatly Laundry OS · <a href="https://laundsoft.com" style="color:inherit">laundsoft.com</a> · <a href="/privacy.html" style="color:inherit">Privacy policy</a> · <button type="button" class="linkbtn" id="consent-open">Cookie settings</button></span>
   </div>
 </footer>
 
 <div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookie consent" hidden>
-  <p>We use cookies to measure how our Google Ads perform. Nothing is stored until you accept.</p>
+  <p>We use cookies to measure how our Google Ads perform. Nothing is stored until you accept. <a href="/privacy.html" style="color:var(--blue-ink)">Privacy policy</a></p>
   <div class="actions">
     <button type="button" class="btn ghost" id="consent-reject">Reject</button>
     <button type="button" class="btn" id="consent-accept">Accept</button>
@@ -1268,6 +1270,13 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       var smooth=!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
       window.scrollTo({top:0,behavior:smooth?'smooth':'auto'}); }
   });
+
+  // sticky header height -> anchor jumps land below the header, not under it
+  (function(){ var nav=document.querySelector('.nav'); if(!nav) return;
+    function upd(){ document.documentElement.style.setProperty('--navh', nav.offsetHeight+'px'); }
+    upd(); window.addEventListener('resize',upd); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(upd);
+    // the router already jumped on load, before the height was known: jump again
+    var el=location.hash&&document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView({block:'start'}); })();
 
   // cookie consent (Google Consent Mode v2)
   (function(){
