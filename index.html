@@ -143,7 +143,7 @@ section{padding-block:64px}
 .app .viewfinder .c.bl{bottom:14px;left:14px;border-right:0;border-top:0}.app .viewfinder .c.br{bottom:14px;right:14px;border-left:0;border-top:0}
 .app .scanline{position:absolute;left:14%;right:14%;height:2px;background:var(--live);box-shadow:0 0 12px var(--live);top:50%;animation:scan 2.4s ease-in-out infinite}
 @keyframes scan{0%,100%{top:22%}50%{top:76%}}
-.app .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.app .steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
 .app .steps span{height:4px;border-radius:2px;background:var(--line);position:relative}
 .app .steps span.on{background:var(--blue-ink)}
 .app .steps span::after{content:attr(data-l);position:absolute;top:8px;left:0;font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;color:var(--muted-2);text-transform:uppercase}
@@ -715,7 +715,7 @@ footer .logo{height:24px}
           <div class="status"><span>7:58 AM</span><span>●●● ▲ ▮</span></div>
           <div class="head"><span class="back">‹</span><div><b>Dirty pickup</b><small>Harbor Grand · loading dock</small></div></div>
           <div class="body">
-            <div class="steps"><span class="on" data-l="Scan"></span><span data-l="Count"></span><span data-l="Photo"></span><span data-l="Done"></span></div>
+            <div class="steps"><span class="on" data-l="Scan"></span><span data-l="Photo"></span><span data-l="Done"></span></div>
             <div class="viewfinder">
               <svg viewBox="0 0 100 100" style="width:96px" aria-hidden="true"><g class="qr" data-seed="14" data-size="84" fill="#fff" transform="translate(8 8)"></g></svg>
               <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><i class="scanline"></i>
