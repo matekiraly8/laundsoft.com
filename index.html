@@ -413,6 +413,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center}
 footer .logo{height:24px}
 .page{display:none}.page.show{display:block}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* e-mail chooser (mailto links do nothing on machines without a mail app) */
+.mailmenu{position:absolute;z-index:80;min-width:220px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;display:grid;gap:2px;font-family:var(--font-body);font-size:14px}
+.mailmenu a,.mailmenu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 12px;border:0;border-radius:8px;background:transparent;color:var(--fg);font:inherit;text-decoration:none;cursor:pointer}
+.mailmenu a:hover,.mailmenu button:hover,.mailmenu a:focus-visible,.mailmenu button:focus-visible{background:var(--blue-pale);outline:none}
+.mailmenu .addr{padding:6px 12px 8px;font-family:var(--font-mono);font-size:12px;color:var(--muted-2);border-bottom:1px solid var(--line);margin-bottom:4px;word-break:break-all}
+.mailmenu .done{color:var(--ok-fg)}
 </style>
 </head>
 <body>
@@ -1224,6 +1231,48 @@ footer .logo{height:24px}
     var owner=el.closest('.page'); if(owner && !owner.classList.contains('show')) show(owner.id.replace('page-',''));
     el.scrollIntoView({block:'start'}); }
   window.addEventListener('hashchange',route); route();
+
+  // e-mail chooser: every mailto link opens a small menu (Gmail / Outlook / mail app / copy)
+  (function(){
+    var menu=null, owner=null;
+    function close(){ if(menu){ menu.remove(); menu=null; } if(owner){ owner.setAttribute('aria-expanded','false'); owner.focus({preventScroll:true}); owner=null; } }
+    function open(a){
+      close();
+      var u=new URL(a.href), to=decodeURIComponent(u.pathname), su=u.searchParams.get('subject')||'';
+      var gmail='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(to)+(su?'&su='+encodeURIComponent(su):'');
+      var outlook='https://outlook.office.com/mail/deeplink/compose?to='+encodeURIComponent(to)+(su?'&subject='+encodeURIComponent(su):'');
+      menu=document.createElement('div'); menu.className='mailmenu'; menu.setAttribute('role','menu');
+      menu.innerHTML='<div class="addr"></div>'+
+        '<a role="menuitem" target="_blank" rel="noopener" data-k="gmail">Open in Gmail</a>'+
+        '<a role="menuitem" target="_blank" rel="noopener" data-k="outlook">Open in Outlook</a>'+
+        '<a role="menuitem" data-k="app">Use my mail app</a>'+
+        '<button type="button" role="menuitem" data-k="copy">Copy address</button>';
+      menu.querySelector('.addr').textContent=to;
+      menu.querySelector('[data-k=gmail]').href=gmail;
+      menu.querySelector('[data-k=outlook]').href=outlook;
+      menu.querySelector('[data-k=app]').href=a.href;
+      menu.querySelector('[data-k=copy]').addEventListener('click',function(e){ var b=e.currentTarget;
+        function ok(){ b.textContent='Copied: '+to; b.classList.add('done'); setTimeout(close,1400); }
+        if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(to).then(ok,function(){ fallback(); }); } else fallback();
+        function fallback(){ var ta=document.createElement('textarea'); ta.value=to; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); ok(); }catch(_){ b.textContent=to; } ta.remove(); } });
+      menu.querySelectorAll('a[data-k]').forEach(function(x){ x.addEventListener('click',function(){ setTimeout(close,50); }); });
+      document.body.appendChild(menu);
+      var r=a.getBoundingClientRect(), w=menu.offsetWidth, h=menu.offsetHeight;
+      var left=Math.max(12, Math.min(r.left+window.scrollX, window.scrollX+document.documentElement.clientWidth-w-12));
+      var top=r.bottom+window.scrollY+8; if(r.bottom+h+8>window.innerHeight && r.top-h-8>0) top=r.top+window.scrollY-h-8;
+      menu.style.left=left+'px'; menu.style.top=top+'px';
+      owner=a; a.setAttribute('aria-expanded','true');
+      menu.querySelector('[data-k=gmail]').focus({preventScroll:true});
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href^="mailto:"]');
+      if(a && !(menu&&menu.contains(a))){ e.preventDefault(); if(owner===a){ close(); } else { open(a); } return; }
+      if(menu && !menu.contains(e.target)) close();
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+    window.addEventListener('resize',close);
+    document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){ a.setAttribute('aria-haspopup','menu'); a.setAttribute('aria-expanded','false'); });
+  })();
 })();
 </script>
 </body></html>
