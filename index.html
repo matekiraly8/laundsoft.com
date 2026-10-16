@@ -1231,6 +1231,15 @@ footer .logo{height:24px}
     var owner=el.closest('.page'); if(owner && !owner.classList.contains('show')) show(owner.id.replace('page-',''));
     el.scrollIntoView({block:'start'}); }
   window.addEventListener('hashchange',route); route();
+  // logo / active menu item: the hash does not change, so scroll back to the top ourselves
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var target=a.getAttribute('href').slice(1); if(!pages[target]) return;
+    var current=(location.hash||'#hotels').slice(1);
+    if(current===target){ e.preventDefault();
+      var smooth=!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+      window.scrollTo({top:0,behavior:smooth?'smooth':'auto'}); }
+  });
 
   // e-mail chooser: every mailto link opens a small menu (Gmail / Outlook / mail app / copy)
   (function(){
