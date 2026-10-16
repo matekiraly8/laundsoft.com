@@ -433,6 +433,8 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
   function gtag(){dataLayer.push(arguments);}
   gtag('consent', 'default', {ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500});
   try { if (localStorage.getItem('ls_consent') === 'granted') gtag('consent', 'update', {ad_storage:'granted', ad_user_data:'granted', ad_personalization:'granted', analytics_storage:'granted'}); } catch (e) {}
+  gtag('set', 'url_passthrough', true);    // keep the ad click ID without cookies
+  gtag('set', 'ads_data_redaction', true);  // redact ad click data while ad_storage is denied
   gtag('js', new Date());
   gtag('config', 'AW-17071627520');
 </script>
@@ -1230,8 +1232,8 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     kr.addEventListener('input',upd); upd(); }
 
   // demo form → Google Apps Script web app → Gmail (see laundsoft-form.gs in the vault)
-  // Google Ads: fires on every successful enquiry. Set ADS_CONVERSION to 'AW-17071627520/<label>' of a laundsoft conversion action.
-  var ADS_CONVERSION = '';
+  // Google Ads conversion "Laundsoft - Demo request form" (account Neatly 466-183-0552): fires on every successful enquiry
+  var ADS_CONVERSION = 'AW-17071627520/_IRfCI_1gJ8dEIC6scw_';
   function trackLead(page){ if(!window.gtag) return;
     gtag('event','form_submit',{form_id:'demo-form', page:page||''});
     if(ADS_CONVERSION) gtag('event','conversion',{send_to:ADS_CONVERSION}); }
