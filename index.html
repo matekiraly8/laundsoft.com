@@ -99,7 +99,7 @@ section{padding-block:64px}
 .btn.sm{padding:9px 16px;font-size:14px}
 .btn.ghost{background:transparent;color:inherit;border-color:var(--line)}
 .tint .btn.ghost{color:var(--blue-ink);border-color:var(--blue-ink)}
-.nav .mobile-nav{display:none;gap:6px;padding:8px 0 10px;overflow-x:auto}
+.nav .mobile-nav{display:none;flex-wrap:wrap;gap:6px;padding-block:8px 10px}
 .fit{width:100%;overflow:hidden}
 .fit>.portal{transform-origin:top left}
 .mobile-nav a{flex:none;text-decoration:none;font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 12px;border:1px solid var(--line);border-radius:999px}
@@ -430,14 +430,14 @@ footer .logo{height:24px}
     <a class="brand" href="#hotels"><svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg><span class="tag">Laundry OS</span></a>
     <nav class="menu" aria-label="Main menu">
       <a href="#hotels" data-page="hotels">Hotel laundries</a>
-      <a href="#airbnb" data-page="airbnb">Airbnb &amp; apartment laundries</a>
+      <a href="#airbnb" data-page="airbnb">Apartment + Hotel laundries</a>
       <a href="#pricing">Pricing</a>
       <a href="#demo" class="btn sm">Book a demo</a>
     </nav>
   </div>
   <nav class="mobile-nav wrap" aria-label="Pages">
     <a href="#hotels" data-page="hotels">Hotel laundries</a>
-    <a href="#airbnb" data-page="airbnb">Apartment laundries</a>
+    <a href="#airbnb" data-page="airbnb">Apartment + Hotel laundries</a>
     <a href="#pricing">Pricing</a>
   </nav>
 </header>
@@ -1226,7 +1226,7 @@ footer .logo{height:24px}
     document.querySelectorAll('a[data-page]').forEach(function(a){ a.classList.toggle('active',a.dataset.page===p); });
     document.querySelectorAll('.plan').forEach(function(pl){ pl.classList.toggle('hi',pl.dataset.plan===p); }); }
   function route(){ var h=(location.hash||'#hotels').slice(1);
-    if(pages[h]){ show(h); window.scrollTo(0,0); document.title=(h==='airbnb'?'Neatly Laundry OS · For laundries serving apartments':'Neatly Laundry OS · For hotel laundries'); return; }
+    if(pages[h]){ show(h); window.scrollTo(0,0); document.title=(h==='airbnb'?'Neatly Laundry OS · For apartment + hotel laundries':'Neatly Laundry OS · For hotel laundries'); return; }
     var el=document.getElementById(h); if(!el) return;
     var owner=el.closest('.page'); if(owner && !owner.classList.contains('show')) show(owner.id.replace('page-',''));
     el.scrollIntoView({block:'start'}); }
