@@ -411,6 +411,11 @@ table.t td:first-child,table.t td.mono{white-space:nowrap}
 footer{padding-block:34px;border-top:1px solid var(--line);font-size:14px;color:var(--muted-2)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center}
 footer .logo{height:24px}
+footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
+.consent{position:fixed;z-index:90;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:560px;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;font-size:14px;color:var(--muted)}
+.consent p{flex:1 1 260px;margin:0}
+.consent .actions{display:flex;gap:8px;margin-left:auto}
+.consent .btn{padding:9px 16px;font-size:14px}
 .page{display:none}.page.show{display:block}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
@@ -421,6 +426,16 @@ footer .logo{height:24px}
 .mailmenu .addr{padding:6px 12px 8px;font-family:var(--font-mono);font-size:12px;color:var(--muted-2);border-bottom:1px solid var(--line);margin-bottom:4px;word-break:break-all}
 .mailmenu .done{color:var(--ok-fg)}
 </style>
+<!-- Google tag (gtag.js) · Google Ads AW-17071627520 · Consent Mode v2: denied until the visitor accepts -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500});
+  try { if (localStorage.getItem('ls_consent') === 'granted') gtag('consent', 'update', {ad_storage:'granted', ad_user_data:'granted', ad_personalization:'granted', analytics_storage:'granted'}); } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'AW-17071627520');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17071627520"></script>
 </head>
 <body>
 
@@ -1172,9 +1187,17 @@ footer .logo{height:24px}
     <svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg>
     <span>Neatly Laundry OS · Textiltech Kft. · Budapest, Hungary</span>
     <a href="mailto:mate.kiraly@neatly.eu" style="text-decoration:none;color:var(--blue-ink)">mate.kiraly@neatly.eu</a>
-    <span style="margin-left:auto">© 2026 Neatly Laundry OS · <a href="https://laundsoft.com" style="color:inherit">laundsoft.com</a></span>
+    <span style="margin-left:auto">© 2026 Neatly Laundry OS · <a href="https://laundsoft.com" style="color:inherit">laundsoft.com</a> · <button type="button" class="linkbtn" id="consent-open">Cookie settings</button></span>
   </div>
 </footer>
+
+<div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookie consent" hidden>
+  <p>We use cookies to measure how our Google Ads perform. Nothing is stored until you accept.</p>
+  <div class="actions">
+    <button type="button" class="btn ghost" id="consent-reject">Reject</button>
+    <button type="button" class="btn" id="consent-accept">Accept</button>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -1205,6 +1228,11 @@ footer .logo{height:24px}
     kr.addEventListener('input',upd); upd(); }
 
   // demo form → Google Apps Script web app → Gmail (see laundsoft-form.gs in the vault)
+  // Google Ads: fires on every successful enquiry. Set ADS_CONVERSION to 'AW-17071627520/<label>' of a laundsoft conversion action.
+  var ADS_CONVERSION = '';
+  function trackLead(page){ if(!window.gtag) return;
+    gtag('event','form_submit',{form_id:'demo-form', page:page||''});
+    if(ADS_CONVERSION) gtag('event','conversion',{send_to:ADS_CONVERSION}); }
   var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwV7v95xXBua0yWjbLkRy3TTwh8SFLCmRKqKIxpygzYP-00mF0qGNaTCwQ7k49H9zs3iw/exec';
   document.getElementById('demo-form').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target;
     var ok=document.getElementById('demo-ok'), err=document.getElementById('demo-err'), btn=document.getElementById('demo-submit');
@@ -1216,7 +1244,7 @@ footer .logo{height:24px}
     ok.hidden=true; err.hidden=true; btn.disabled=true; var label=btn.textContent; btn.textContent='Sending…';
     fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
       .then(function(r){ return r.json(); })
-      .then(function(res){ if(res && res.ok){ ok.hidden=false; f.reset(); } else { err.hidden=false; } })
+      .then(function(res){ if(res && res.ok){ ok.hidden=false; f.reset(); trackLead(data.page); } else { err.hidden=false; } })
       .catch(function(){ err.hidden=false; })
       .then(function(){ btn.disabled=false; btn.textContent=label; }); });
 
@@ -1240,6 +1268,20 @@ footer .logo{height:24px}
       var smooth=!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
       window.scrollTo({top:0,behavior:smooth?'smooth':'auto'}); }
   });
+
+  // cookie consent (Google Consent Mode v2)
+  (function(){
+    var box=document.getElementById('consent'), KEY='ls_consent';
+    function get(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+    function set(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+    function choose(v){ set(v); var g=(v==='granted')?'granted':'denied';
+      if(window.gtag) gtag('consent','update',{ad_storage:g,ad_user_data:g,ad_personalization:g,analytics_storage:g});
+      box.hidden=true; }
+    document.getElementById('consent-accept').addEventListener('click',function(){ choose('granted'); });
+    document.getElementById('consent-reject').addEventListener('click',function(){ choose('denied'); });
+    document.getElementById('consent-open').addEventListener('click',function(){ box.hidden=false; });
+    if(!get()) box.hidden=false;
+  })();
 
   // e-mail chooser: every mailto link opens a small menu (Gmail / Outlook / mail app / copy)
   (function(){
