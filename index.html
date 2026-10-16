@@ -1122,7 +1122,7 @@ footer .logo{height:24px}
       <label for="f-mail">Work e-mail</label>
       <input id="f-mail" name="email" type="email" autocomplete="email" placeholder="anna@cleanco.com" required>
       <label for="f-kg">Daily volume processed (kg, roughly)</label>
-      <input id="f-kg" name="daily_kg" type="number" inputmode="numeric" min="0" step="100" placeholder="8000">
+      <input id="f-kg" name="daily_kg" type="number" inputmode="numeric" min="0" step="1" placeholder="8000">
       <div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <button class="btn" type="submit" id="demo-submit">Get in touch</button>
       <p id="demo-ok" hidden role="status" style="margin-top:12px;color:var(--ok-fg);font-size:14px">Thank you, we have your request. We will get back to you with a time slot within one working day.</p>
@@ -1198,7 +1198,7 @@ footer .logo{height:24px}
     kr.addEventListener('input',upd); upd(); }
 
   // demo form → Google Apps Script web app → Gmail (see laundsoft-form.gs in the vault)
-  var FORM_ENDPOINT = 'https://script.google.com/macros/s/PASTE_DEPLOYMENT_ID/exec';
+  var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwV7v95xXBua0yWjbLkRy3TTwh8SFLCmRKqKIxpygzYP-00mF0qGNaTCwQ7k49H9zs3iw/exec';
   document.getElementById('demo-form').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target;
     var ok=document.getElementById('demo-ok'), err=document.getElementById('demo-err'), btn=document.getElementById('demo-submit');
     var data={name:f.name.value.trim(), company:f.company.value.trim(), email:f.email.value.trim(), daily_kg:f.daily_kg.value, website:f.website.value, page:(document.querySelector('.page.show')||{}).id||''};
