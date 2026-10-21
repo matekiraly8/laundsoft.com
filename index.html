@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>
+  // First language of the browser decides: de-* -> /de/, it-* -> /it/, anything else stays English.
+  // A language picked in the switcher (localStorage ls_lang) always wins. Query string and hash are kept.
+  (function(){ try {
+    var p = location.pathname; if (p !== '/' && p !== '/index.html') return;
+    var saved = null; try { saved = localStorage.getItem('ls_lang'); } catch (e) {}
+    if (saved) { if (saved === 'de' || saved === 'it') location.replace('/' + saved + '/' + location.search + location.hash); return; }
+    if (/bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent)) return;
+    var l = String((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+    var t = l.indexOf('de') === 0 ? '/de/' : l.indexOf('it') === 0 ? '/it/' : null;
+    if (t) location.replace(t + location.search + location.hash);
+  } catch (e) {} })();
+</script>
 <title>Neatly Laundry OS · Software for hotel and short-term-rental laundries</title>
 <meta name="description" content="One system from the dirty trolley to the paid invoice: client portal, QR courier app, plant HUB, automatic invoicing. Built and used daily by a laundry serving hotels and ~2,000 apartments.">
 <meta property="og:title" content="Neatly Laundry OS">
@@ -1361,7 +1374,10 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
   (function(){ function upd(){ var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb';
     document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.setAttribute('href', a.dataset.base+(ap?'#airbnb':'')); }); }
     window.addEventListener('hashchange', function(){ setTimeout(upd,0); }); upd();
+    function remember(l){ try{ localStorage.setItem('ls_lang', l); }catch(e){} }
+    document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.addEventListener('click', function(){ remember(a.getAttribute('lang')); }); });
     var sel=document.querySelector('.lang-select'); if(sel) sel.addEventListener('change', function(){
+      remember(sel.options[sel.selectedIndex].textContent.toLowerCase());
       var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb'; location.href=sel.value+(ap?'#airbnb':''); }); })();
 </script>
 </body></html>

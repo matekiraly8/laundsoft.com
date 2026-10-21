@@ -1347,7 +1347,10 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
   (function(){ function upd(){ var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb';
     document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.setAttribute('href', a.dataset.base+(ap?'#airbnb':'')); }); }
     window.addEventListener('hashchange', function(){ setTimeout(upd,0); }); upd();
+    function remember(l){ try{ localStorage.setItem('ls_lang', l); }catch(e){} }
+    document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.addEventListener('click', function(){ remember(a.getAttribute('lang')); }); });
     var sel=document.querySelector('.lang-select'); if(sel) sel.addEventListener('change', function(){
+      remember(sel.options[sel.selectedIndex].textContent.toLowerCase());
       var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb'; location.href=sel.value+(ap?'#airbnb':''); }); })();
 </script>
 </body></html>
