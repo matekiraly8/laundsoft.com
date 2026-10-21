@@ -5,18 +5,40 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://laundsoft.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://laundsoft.com/fr/"/>
   </url>
   <url>
     <loc>https://laundsoft.com/de/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://laundsoft.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://laundsoft.com/fr/"/>
   </url>
   <url>
     <loc>https://laundsoft.com/it/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://laundsoft.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://laundsoft.com/fr/"/>
+  </url>
+  <url>
+    <loc>https://laundsoft.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://laundsoft.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://laundsoft.com/fr/"/>
+  </url>
+  <url>
+    <loc>https://laundsoft.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://laundsoft.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://laundsoft.com/fr/"/>
   </url>
   <url>
     <loc>https://laundsoft.com/privacy.html</loc>

@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Neatly Laundry OS · Logiciel pour blanchisseries d’hôtels et d’appartements</title>
+<meta name="description" content="Un seul système, du chariot de linge sale à la facture payée : portail client, appli livreur avec QR, HUB d’usine, facturation automatique. Conçu et utilisé chaque jour par une blanchisserie qui sert des hôtels et environ 2 000 appartements.">
+<meta property="og:title" content="Neatly Laundry OS">
+<meta property="og:description" content="Logiciel de blanchisserie né dans une blanchisserie. Portail client, appli livreur avec QR, HUB d’usine et facturation automatique, facturé au kilo.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://laundsoft.com/fr/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="en" href="https://laundsoft.com/">
+<link rel="alternate" hreflang="de" href="https://laundsoft.com/de/">
+<link rel="alternate" hreflang="it" href="https://laundsoft.com/it/">
+<link rel="alternate" hreflang="es" href="https://laundsoft.com/es/">
+<link rel="alternate" hreflang="fr" href="https://laundsoft.com/fr/">
+<link rel="alternate" hreflang="x-default" href="https://laundsoft.com/">
+<link rel="canonical" href="https://laundsoft.com/fr/">
+<meta name="theme-color" content="#62a5c0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Homemade+Apple&display=swap">
+<style>
+/* Layout: SaaS product site. Dark navy "control room" bands alternate with light paper sections; every feature is shown on a device (MacBook, phone, tablet) or as a live-looking product panel. */
+:root{
+  --blue:#62a5c0; --blue-ink:#3f86a5; --blue-pale:#e4eff4;
+  --tint:#eef6fa; --tint-2:#d9ebf3; --bezel:#263640;
+  --bg:#ffffff; --fg:#25282b; --muted:#595a5c; --muted-2:#7c8085;
+  --mist:#f2f6f8; --line:#dde5e9; --surface:#ffffff;
+  --ok:#3f9e6a; --warn:#b8761f; --err:#b4472c; --live:#2fbf71;
+  --ok-bg:#e2f3ea; --ok-fg:#1e6b43; --warn-bg:#fbeedc; --warn-fg:#8a5413;
+  --shadow:0 18px 44px rgba(22,50,62,.14); --shadow-sm:0 6px 18px rgba(22,50,62,.08);
+  --font-display:"Geist","Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Geist",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --btn-bg:#62a5c0; --btn-fg:#ffffff;
+  --maxw:1120px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0c1b22; --fg:#e6edf0; --muted:#a9b7bf; --muted-2:#8595a0; --mist:#122730; --line:#24404b; --surface:#132a34; --blue-pale:#17333f; --blue-ink:#8cc3d9; --tint:#10242e; --tint-2:#143040;
+  --ok-bg:#163a2a; --ok-fg:#8fe0b4; --warn-bg:#3d2c12; --warn-fg:#f0c27a; --btn-bg:#62a5c0; --btn-fg:#0e232c;
+  --shadow:0 18px 44px rgba(0,0,0,.45); --shadow-sm:0 6px 18px rgba(0,0,0,.3); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0c1b22; --fg:#e6edf0; --muted:#a9b7bf; --muted-2:#8595a0; --mist:#122730; --line:#24404b; --surface:#132a34; --blue-pale:#17333f; --blue-ink:#8cc3d9; --tint:#10242e; --tint-2:#143040;
+  --ok-bg:#163a2a; --ok-fg:#8fe0b4; --warn-bg:#3d2c12; --warn-fg:#f0c27a; --btn-bg:#62a5c0; --btn-fg:#0e232c;
+  --shadow:0 18px 44px rgba(0,0,0,.45); --shadow-sm:0 6px 18px rgba(0,0,0,.3); color-scheme:dark }
+
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16.5px;line-height:1.6}
+img,svg{display:block;max-width:100%}
+h1,h2,h3,h4{font-family:var(--font-display);text-wrap:balance;letter-spacing:-.025em;line-height:1.1}
+h1{font-size:clamp(32px,5vw,54px);font-weight:600}
+h2{font-size:clamp(26px,3.4vw,38px);font-weight:600}
+h3{font-size:20px;font-weight:600;line-height:1.3}
+h4{font-size:16px;font-weight:600}
+p{max-width:64ch}
+a{color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-ink);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--blue);flex:none}
+.lede{font-size:clamp(17px,2vw,19.5px);color:var(--muted);line-height:1.55}
+.tint{background:var(--tint);color:var(--fg)}
+section{padding-block:64px}
+@media(min-width:760px){section{padding-block:96px}}
+.sec-head{max-width:62ch;margin-bottom:40px}
+.sec-head .lede{margin-top:12px}
+
+/* proof strip */
+.proof{border-bottom:1px solid var(--line);background:var(--bg)}
+.proof .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:18px 20px;padding-block:22px}
+@media(min-width:760px){.proof .wrap{grid-template-columns:repeat(6,1fr)}}
+.proof div{min-width:0}
+.proof b{display:block;font-family:var(--font-display);font-size:26px;font-weight:600;letter-spacing:-.02em;color:var(--blue);font-variant-numeric:tabular-nums;line-height:1.1}
+.proof span{display:block;font-size:13px;color:var(--muted-2);margin-top:4px;line-height:1.35}
+
+/* manifesto */
+.manifesto{border-bottom:1px solid var(--line)}
+.mgrid{display:grid;gap:36px}
+@media(min-width:860px){.mgrid{grid-template-columns:repeat(3,1fr);gap:48px}}
+.mcol{min-width:0;position:relative;padding-top:18px}
+.mcol::before{content:"";position:absolute;top:0;left:0;width:44px;height:3px;background:var(--blue)}
+.mk{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-ink);margin-bottom:14px}
+.mlead{font-family:var(--font-display);font-size:clamp(19px,2vw,23px);font-weight:600;line-height:1.3;letter-spacing:-.01em;color:var(--fg);text-wrap:pretty;margin-bottom:12px}
+.mcol p:not(.mlead){color:var(--muted);font-size:16px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav>.wrap:not(.mobile-nav){display:flex;align-items:center;gap:22px;height:66px}
+[id]{scroll-margin-top:calc(var(--navh,72px) + 12px)}
+.nav .menu a.btn{color:var(--btn-fg)}
+.nav .menu a.btn:hover{background:var(--btn-bg)}
+.logo{height:30px;width:auto;color:var(--fg)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand .tag{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);border-left:1px solid var(--line);padding-left:12px}
+.menu{display:flex;gap:4px;margin-left:auto}
+.menu a{text-decoration:none;font-weight:500;font-size:15px;color:var(--muted);padding:8px 12px;border-radius:7px}
+.menu a:hover{background:var(--mist);color:var(--fg)}
+.menu a.active{color:var(--blue-ink);background:var(--blue-pale)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:16px;padding:14px 24px;border-radius:9px;border:1px solid transparent;cursor:pointer;text-decoration:none;background:var(--btn-bg);color:var(--btn-fg);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.btn.sm{padding:9px 16px;font-size:14px}
+.btn.ghost{background:transparent;color:inherit;border-color:var(--line)}
+.tint .btn.ghost{color:var(--blue-ink);border-color:var(--blue-ink)}
+.nav .mobile-nav{display:none;flex-wrap:wrap;gap:6px;padding-block:8px 10px}
+.fit{width:100%;overflow:hidden}
+.fit>.portal{transform-origin:top left}
+.mobile-nav a{flex:none;text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);padding:6px 11px;border:1px solid var(--line);border-radius:999px}
+.mobile-nav a.active{color:var(--blue-ink);border-color:var(--blue);background:var(--blue-pale)}
+@media(max-width:760px){.menu a:not(.btn){display:none} .brand .tag{display:none} .nav .mobile-nav{display:flex}}
+
+/* hero */
+.hero{background:radial-gradient(900px 520px at 85% -10%,var(--tint-2) 0%,var(--tint) 45%,var(--bg) 100%);padding-block:72px 84px;overflow:hidden}
+.hero .grid{display:grid;gap:40px;align-items:center}
+@media(min-width:900px){.hero .grid{grid-template-columns:1.1fr .9fr;gap:64px}}
+.hero h1{max-width:16ch}
+.hero .lede{margin-top:18px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .macbook{max-width:520px}
+.hero .phone{margin:0 auto}
+
+/* devices */
+.macbook{width:100%;max-width:760px;margin:0 auto;filter:drop-shadow(0 24px 40px rgba(22,50,62,.18))}
+.macbook .screen{background:var(--bezel);border-radius:14px 14px 6px 6px;padding:12px 12px 14px}
+.macbook .base{height:12px;background:linear-gradient(#cfd6da,#9ba6ad);border-radius:0 0 12px 12px;margin:0 -3%;position:relative}
+.macbook .base::after{content:"";position:absolute;left:50%;top:0;width:12%;height:4px;transform:translateX(-50%);background:#7f8a91;border-radius:0 0 4px 4px}
+.browser{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);min-width:0}
+.browser .bar{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--mist);border-bottom:1px solid var(--line)}
+.browser .bar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.browser .bar span{margin-left:8px;font-family:var(--font-mono);font-size:12px;color:var(--muted-2);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 10px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.phone{width:242px;max-width:100%;background:var(--bezel);border-radius:40px;padding:9px;box-shadow:var(--shadow);position:relative;flex:none}
+.phone::before{content:"";position:absolute;left:50%;top:18px;width:84px;height:22px;background:var(--bezel);border-radius:12px;transform:translateX(-50%);z-index:2}
+.phone .scr{background:var(--mist);border-radius:32px;overflow:hidden;aspect-ratio:9/19.5;padding:0;font-size:11.5px;line-height:1.35;color:var(--fg)}
+.app{display:flex;flex-direction:column;height:100%}
+.app .status{display:flex;justify-content:space-between;padding:12px 20px 0;font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+.app .head{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.app .head b{font-size:13px;display:block;line-height:1.2}
+.app .head small{display:block;color:var(--muted-2);font-size:10.5px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
+.app .head .back{width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;color:var(--blue-ink);font-size:14px;flex:none}
+.app .body{padding:0 12px 14px;display:flex;flex-direction:column;gap:8px;flex:1;min-height:0}
+.app .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.app .card small{display:block;color:var(--muted-2);font-size:10.5px}
+.app .viewfinder{height:126px;background:#0b0f12;border-radius:14px;position:relative;overflow:hidden;display:grid;place-items:center}
+.app .viewfinder .c{position:absolute;width:24px;height:24px;border:3px solid #fff;border-radius:4px}
+.app .viewfinder .c.tl{top:14px;left:14px;border-right:0;border-bottom:0}.app .viewfinder .c.tr{top:14px;right:14px;border-left:0;border-bottom:0}
+.app .viewfinder .c.bl{bottom:14px;left:14px;border-right:0;border-top:0}.app .viewfinder .c.br{bottom:14px;right:14px;border-left:0;border-top:0}
+.app .scanline{position:absolute;left:14%;right:14%;height:2px;background:var(--live);box-shadow:0 0 12px var(--live);top:50%;animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%,100%{top:22%}50%{top:76%}}
+.app .steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+.app .steps span{height:4px;border-radius:2px;background:var(--line);position:relative}
+.app .steps span.on{background:var(--blue-ink)}
+.app .steps span::after{content:attr(data-l);position:absolute;top:8px;left:0;font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;color:var(--muted-2);text-transform:uppercase}
+.app .steps{margin-bottom:10px}
+.app .check{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.app .check:last-child{border:0}
+.app .check i{width:18px;height:18px;border-radius:50%;background:var(--ok-bg);display:grid;place-items:center;font-style:normal;color:var(--ok-fg);font-size:11px;flex:none}
+.app .check .grow{flex:1;min-width:0;line-height:1.3}
+.app .primary{margin-top:auto;width:100%;padding:10px;font-size:13.5px}
+.app .sigpad{height:40px;border:1px dashed var(--line);border-radius:10px;background:var(--surface);display:grid;place-items:center}
+.tablet{background:var(--bezel);border-radius:22px;padding:14px;box-shadow:var(--shadow)}
+.tablet .scr{background:var(--surface);border-radius:12px;overflow:hidden;padding:14px;font-size:13px;color:var(--fg)}
+
+/* portal mockup (the hotel portal, rendered as live HTML) */
+.portal{display:grid;grid-template-columns:168px 1fr;background:#fff;color:#25282b;border-radius:5px;overflow:hidden;font-size:11px;aspect-ratio:14/9;min-height:0}
+.portal .side{border-right:1px solid #e3e9ec;padding:14px 12px;display:flex;flex-direction:column;gap:2px;background:#fff}
+.portal .side .plogo{display:flex;align-items:center;gap:6px;margin-bottom:16px}
+.portal .side .plogo svg{height:16px;width:auto;color:#25282b}
+.portal .side .plogo i{font-style:normal;font-family:var(--font-mono);font-size:8.5px;background:#62a5c0;color:#fff;padding:2px 5px;border-radius:3px}
+.portal .side .grp{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.12em;color:#8e979d;margin:10px 0 4px}
+.portal .side a{display:block;padding:6px 8px;border-radius:5px;color:#4a5157;font-size:11px;text-decoration:none}
+.portal .side a.on{background:#e4eff4;color:#3f86a5;font-weight:600}
+.portal .side .user{margin-top:auto;padding-top:10px;border-top:1px solid #e3e9ec;color:#7c8085;font-size:10px}
+.portal .side .user b{display:block;color:#25282b;font-size:11px}
+.portal .main{background:#f6f8fa;padding:14px 18px;min-width:0;overflow:hidden}
+.portal .main h5{font-family:var(--font-display);font-size:15px;font-weight:600;margin-bottom:2px}
+.portal .main .sub{color:#7c8085;font-size:10px;margin-bottom:12px}
+.portal .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.portal .tile{background:#fff;border:1px solid #e3e9ec;border-radius:7px;padding:10px 12px}
+.portal .tile.hi{background:#62a5c0;color:#fff;border-color:#62a5c0}
+.portal .tile .k{font-family:var(--font-mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#8e979d}
+.portal .tile.hi .k{color:#eaf4f8}
+.portal .tile .v{font-family:var(--font-display);font-size:19px;font-weight:600;margin:3px 0 1px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.portal .tile .d{font-size:9.5px;color:#7c8085}.portal .tile.hi .d{color:#eaf4f8}
+.portal .panels{display:grid;grid-template-columns:1.3fr 1fr;gap:10px}
+.portal .panel{background:#fff;border:1px solid #e3e9ec;border-radius:7px;padding:10px 12px}
+.portal .panel h6{font-family:var(--font-display);font-size:11px;font-weight:600;margin-bottom:6px}
+.portal .row{display:flex;align-items:center;gap:8px;padding:4px 0;border-top:1px solid #eef2f4;font-size:10px}
+.portal .row .bar{flex:1;height:4px;background:#eef2f4;border-radius:2px;overflow:hidden}
+.portal .row .bar i{display:block;height:100%;background:#62a5c0}
+.portal .row .n{font-family:var(--font-mono);font-weight:600;min-width:44px;text-align:right}
+.portal .row.sum{border-top:2px solid #25282b;font-weight:600;font-size:10.5px}
+.portal .list{display:grid;gap:6px}
+.portal .cyc{background:#fff;border:1px solid #e3e9ec;border-radius:7px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:10.5px}
+.portal .cyc small{display:block;color:#7c8085;font-size:9.5px}
+.portal .cyc .grow{flex:1;min-width:0}
+.portal .cyc .id{font-family:var(--font-mono);font-size:9px;background:#f2f6f8;padding:2px 6px;border-radius:3px;color:#595a5c}
+.portal .cyc .st{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:999px}
+.portal .cyc .st.open{background:#fbeedc;color:#8a5413}.portal .cyc .st.closed{background:#e2f3ea;color:#1e6b43}
+.portal .note{background:#e4eff4;border:1px solid #cfe0e8;border-radius:6px;padding:7px 10px;font-size:9.5px;color:#3f86a5;margin-bottom:8px}
+.portal.wide{aspect-ratio:auto}
+@media(max-width:700px){.portal{grid-template-columns:1fr;aspect-ratio:auto}.portal .side{display:none}.portal .tiles{grid-template-columns:1fr 1fr}.portal .panels{grid-template-columns:1fr}}
+
+/* product panels */
+.ui{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px;box-shadow:var(--shadow-sm);min-width:0}
+.ui-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--mist);font-weight:600}
+.ui-head .right{margin-left:auto;font-weight:400;color:var(--muted-2);font-family:var(--font-mono);font-size:12px}
+.ui-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.ui-row:last-child{border-bottom:0}
+.ui-row .grow{flex:1;min-width:0}
+.ui-row small{display:block;color:var(--muted-2);font-size:12px}
+.pill{display:inline-block;font-family:var(--font-mono);font-size:11px;padding:3px 9px;border-radius:999px;background:var(--mist);color:var(--muted);white-space:nowrap}
+.pill.ok,.pill.live{background:var(--ok-bg);color:var(--ok-fg)}.pill.warn{background:var(--warn-bg);color:var(--warn-fg)}.pill.info{background:var(--blue-pale);color:var(--blue-ink)}
+.pill.live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--live);margin-right:6px;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+table.t{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+table.t th{font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--mist);white-space:nowrap}
+table.t td{padding:9px 12px;border-bottom:1px solid var(--line)}
+table.t tr:last-child td{border-bottom:0}
+table.t td.n,table.t th.n{text-align:right}
+table.t td:first-child,table.t td.mono{white-space:nowrap}
+.tscroll{overflow-x:auto}
+
+/* feature layout */
+.feat{display:grid;gap:36px;align-items:center}
+.feat>*{min-width:0}
+@media(min-width:900px){.feat{grid-template-columns:1fr 1fr;gap:56px}.feat.rev>.copy{order:2}}
+.copy ul{list-style:none;display:grid;gap:12px;margin-top:22px}
+.copy li{position:relative;padding-left:32px;color:var(--muted)}
+.copy li::before{content:"";position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;background:var(--blue-pale);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.5l2.6 2.5L14 7.5' fill='none' stroke='%2362a5c0' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.copy li b{color:var(--fg);font-weight:600}
+.stepnum{font-family:var(--font-mono);font-size:12px;color:var(--muted-2);letter-spacing:.1em;margin-bottom:10px}
+.callout{border-left:3px solid var(--blue);background:var(--blue-pale);padding:16px 20px;border-radius:0 10px 10px 0;margin-top:26px;font-size:15.5px;color:var(--fg)}
+.callout b{font-family:var(--font-display);color:var(--blue-ink)}
+.band{background:var(--mist)}
+.timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:28px 0 8px}
+.timeline div{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--muted-2);padding-top:12px;position:relative}
+.timeline div::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:2px;background:var(--line)}
+.timeline div.done::before{background:var(--blue-ink)}
+.timeline div.now::before{background:var(--live)}
+.timeline div.now{color:var(--fg);font-weight:500}
+@media(max-width:600px){.timeline{grid-template-columns:repeat(3,1fr)}}
+.twoup{display:grid;gap:20px}
+.twoup>*{min-width:0}
+@media(min-width:700px){.twoup{grid-template-columns:1fr 1fr}}
+.fig{margin-top:14px;font-family:var(--font-mono);font-size:12px;color:var(--muted-2)}
+.fig.photo{display:inline-flex;gap:8px;align-items:center;background:var(--mist);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;color:var(--muted);max-width:100%}
+.fig.photo::before{content:"PHOTO";flex:none;font-size:10px;letter-spacing:.14em;padding:2px 6px;border-radius:4px;background:var(--blue-ink);color:#fff}
+:root[data-theme="dark"] .fig.photo::before{color:#0e232c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fig.photo::before{color:#0e232c}}
+
+/* cage illustration */
+.scene{background:linear-gradient(180deg,var(--mist),var(--surface));border:1px solid var(--line);border-radius:14px;padding:20px 16px 10px;overflow:hidden}
+.scene svg{width:100%;height:auto}
+
+/* HUB */
+.hub{background:var(--surface);border-radius:14px;padding:18px;color:var(--fg);box-shadow:var(--shadow);border:1px solid var(--line)}
+.browser .hub{border:0;border-radius:0;box-shadow:none}
+.hub .top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 28px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.hub .big{font-family:var(--font-display);font-size:40px;font-weight:600;color:var(--blue);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.hub .big small{font-size:15px;color:var(--muted-2);font-weight:500;letter-spacing:0}
+.hub .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}
+.htabs{display:inline-flex;gap:4px;background:var(--mist);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:14px;flex-wrap:wrap}
+.htabs span{font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:7px}
+.htabs span.on{background:var(--surface);color:var(--fg);font-weight:600;box-shadow:var(--shadow-sm)}
+.hstat{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:13px;color:var(--muted-2);margin-bottom:14px}
+.hstat b{color:var(--fg);font-variant-numeric:tabular-nums}
+.shifts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.shift{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;display:flex;flex-direction:column}
+.shift.live{border-top-color:var(--blue-ink)}
+.sh-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sh-head b{font-family:var(--font-display);font-size:16px}
+.sh-head .pill{margin-left:auto}
+.sb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.06em;padding:3px 7px;border-radius:5px}
+.sb.am{background:var(--blue-pale);color:var(--blue-ink)}.sb.pm{background:var(--mist);color:var(--muted);border:1px solid var(--line)}
+.formula{display:block;font-size:11.5px;color:var(--muted-2);margin-top:-2px}
+.shift .big{margin:8px 0 14px}
+.sh-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:12px;border-top:1px solid var(--line)}
+.sh-stats .mid{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sh-stats small{display:block;font-size:11.5px;color:var(--muted-2);line-height:1.35;margin-top:2px}
+.mixbar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin:4px 0 10px}
+.mixbar i{display:block;height:100%}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lg{display:flex;gap:8px;align-items:flex-start;background:var(--mist);border-radius:8px;padding:7px 9px;min-width:0}
+.lg>i{width:9px;height:9px;border-radius:2px;flex:none;margin-top:5px}
+.lg b{font-size:12.5px;display:block}.lg small{font-size:11.5px;color:var(--muted-2)}.lg small b{display:inline;font-size:11.5px;color:var(--fg)}
+.empty{flex:1;margin-top:16px;border:1.5px dashed var(--line);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:6px;min-height:200px}
+.empty b{font-family:var(--font-display);font-size:16px}.empty span{font-size:13px;color:var(--muted-2);max-width:34ch}
+.loghead{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.loghead b{font-family:var(--font-display);font-size:15px}
+.search{font-size:12.5px;color:var(--muted-2);border:1px solid var(--line);border-radius:8px;padding:7px 12px;background:var(--mist);min-width:220px}
+.hub table.t{margin-top:10px}
+.hub .client{font-size:13px;color:var(--fg);white-space:nowrap}
+.hub td.ok{color:var(--ok-fg);font-weight:600}.hub td.muted{color:var(--muted-2)}
+@media(max-width:760px){.shifts{grid-template-columns:1fr}}
+@media(max-width:420px){.legend,.sh-stats{grid-template-columns:1fr}}
+
+.paper.att{padding:20px 20px 18px}
+.paper.att h4{font-size:14px;letter-spacing:.02em}
+.att-note{font-size:10.5px;color:#7c8085;margin:-6px 0 10px}
+.paper.att table.t{font-size:11px}
+.paper.att table.t th{background:#62a5c0;color:#fff;border-color:#62a5c0;font-size:8.5px;letter-spacing:.04em;padding:7px 5px}
+.paper.att table.t td{padding:5px;white-space:nowrap;font-family:var(--font-body);font-size:11px;font-variant-numeric:tabular-nums}
+.paper.att table.t tr:nth-child(even) td{background:#f2f8fb}
+.paper.att .sigcell{width:78px;height:32px;padding-left:8px}
+.hand{display:inline-block;font-family:"Homemade Apple",cursive;font-size:14px;color:#1f2f6b;line-height:1;transform-origin:left center;white-space:nowrap}
+.att-sum{margin-top:10px;background:#eef6fa;border-radius:6px;padding:10px 12px;font-size:12px;display:grid;gap:4px;color:#25282b}
+.att-sign{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:22px;font-size:10.5px;color:#7c8085;text-align:center}
+.att-sign i{display:block;border-top:1px solid #9ba6ad;margin:2px 0 4px}
+.big-hand{font-size:14px;height:26px}
+/* paper (pdf) */
+.paper{background:#fff;color:#25282b;border-radius:6px;padding:22px 24px;box-shadow:var(--shadow);font-size:12.5px;position:relative;border-top:6px solid #62a5c0;min-width:0}
+.paper h4{font-size:15px;margin-bottom:2px;color:#25282b}
+.paper .sub{font-family:var(--font-mono);font-size:11px;color:#7c8085;margin-bottom:12px}
+.paper table.t th{background:#f2f6f8;color:#7c8085;border-color:#dde5e9}
+.paper table.t td{border-color:#dde5e9;color:#25282b}
+.paper table.t td:first-child,.paper table.t td:last-child{white-space:nowrap}
+.sig{height:22px;width:70px}
+.paper .stamp{position:absolute;right:18px;top:16px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:#62a5c0;border:1.5px solid #62a5c0;padding:4px 8px;border-radius:4px;transform:rotate(-4deg)}
+
+/* pricing */
+.plans{display:grid;gap:20px;margin-top:36px}
+@media(min-width:800px){.plans{grid-template-columns:1fr 1fr}}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px 30px 26px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;min-width:0}
+.plan.hi{border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-pale),var(--shadow)}
+.plan .name{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-ink)}
+.plan h3{font-size:22px;margin:8px 0 18px}
+.price{display:grid;gap:14px;margin-bottom:20px}
+.price div{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:14px 16px;background:var(--mist);border-radius:10px}
+.price b{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.price span{color:var(--muted);font-size:14px}
+.plan ul{list-style:none;display:grid;gap:9px;color:var(--muted);font-size:15px;margin-bottom:24px}
+.plan li{padding-left:22px;position:relative}
+.plan li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.plan .btn{margin-top:auto}
+.fineprint{margin-top:18px;font-size:13.5px;color:var(--muted-2)}
+
+/* airbnb page extras */
+.slices{display:grid;gap:14px;margin-top:28px}
+@media(min-width:700px){.slices{grid-template-columns:repeat(4,1fr)}}
+.slice{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.slice .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted-2);text-transform:uppercase}
+.slice h4{margin:8px 0 6px}
+.slice p{font-size:14px;color:var(--muted)}
+.route{display:grid;gap:0;position:relative;padding-left:22px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 12px 6px 30px}
+.route::before{content:"";position:absolute;left:15px;top:16px;bottom:16px;width:2px;background:var(--line)}
+.route div{position:relative;padding:7px 0;font-size:12px;display:flex;gap:6px;align-items:center;min-width:0}
+.route .pill{font-size:10px;padding:2px 7px}
+.route div span:nth-child(2){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.route div::before{content:"";position:absolute;left:-19px;top:13px;width:10px;height:10px;border-radius:50%;background:var(--blue-ink);border:2px solid var(--surface)}
+.route div.late::before{background:var(--err)}
+.route div.done::before{background:var(--ok)}
+.route .t{font-family:var(--font-mono);color:var(--muted-2);font-size:11px;width:34px;flex:none}
+.msg{background:var(--blue-pale);border-radius:12px 12px 12px 2px;padding:8px 12px;font-size:12px;max-width:92%}
+.msg.me{background:var(--surface);border:1px solid var(--line);border-radius:12px 12px 2px 12px;margin-left:auto;margin-top:-4px}
+
+/* form */
+.form{padding:22px;border-radius:14px;background:var(--surface);border:1px solid var(--line);color:var(--fg);box-shadow:var(--shadow)}
+.form label{display:block;font-size:13px;color:var(--muted)}
+.form input{width:100%;margin:6px 0 14px;padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:var(--mist);color:var(--fg);font:inherit}
+.form input::placeholder{color:var(--muted-2)}
+.form .btn{width:100%}
+.form .btn[disabled]{opacity:.65;cursor:wait}
+.form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-row{display:grid;gap:0 12px}
+@media(min-width:520px){.form-row{grid-template-columns:1fr 1fr}}
+
+/* fee calculator */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.calc{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 30px;box-shadow:var(--shadow-sm)}
+.calc-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 20px;margin-bottom:18px}
+.calc .name{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-ink)}
+.calc h3{margin-top:6px}
+.calc-head small{font-family:var(--font-mono);font-size:12px;color:var(--muted-2)}
+.calc input[type=range]{width:100%;height:28px;accent-color:var(--blue-ink);cursor:pointer}
+.calc-scale{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted-2);margin-top:2px}
+.calc-out{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:20px;padding:16px 20px;background:var(--mist);border-radius:12px}
+.calc-out .lbl{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin-bottom:2px}
+.calc-out b{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.calc-out .eq{font-size:20px;color:var(--muted-2)}
+.calc-out .fee{margin-left:auto;text-align:right}
+.calc-out .fee b{font-size:34px;color:var(--blue)}
+@media(max-width:560px){.calc{padding:20px 18px}.calc-out .eq{display:none}.calc-out .fee{margin-left:0;text-align:left;width:100%}}
+
+/* my story */
+.story{border-top:1px solid var(--line)}
+.story .wrap{display:grid;gap:32px;align-items:start}
+@media(min-width:860px){.story .wrap{grid-template-columns:260px 1fr;gap:64px}}
+.founder{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow-sm)}
+@media(min-width:860px){.founder{position:sticky;top:96px}}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--mist);box-shadow:0 0 0 4px var(--blue-pale);margin-bottom:14px}
+.founder b{font-family:var(--font-display);font-size:18px}
+.founder span{font-size:14px;color:var(--muted-2)}
+.founder .btn{margin-top:16px;align-self:flex-start}
+.story-body p{color:var(--muted);margin-top:16px;font-size:17px}
+.story-body p b{color:var(--fg)}
+.story-body h2{margin-bottom:6px}
+.story-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px;margin:28px 0 4px;padding:20px 0;border-block:1px solid var(--line)}
+@media(min-width:700px){.story-stats{grid-template-columns:repeat(5,1fr)}}
+.story-stats b{display:block;font-family:var(--font-display);font-size:26px;font-weight:600;letter-spacing:-.02em;color:var(--blue);font-variant-numeric:tabular-nums}
+.story-stats span{font-size:13px;color:var(--muted-2)}
+.story blockquote{margin-top:26px;border-left:3px solid var(--blue);padding:4px 0 4px 20px;font-family:var(--font-display);font-size:clamp(19px,2vw,22px);font-weight:500;line-height:1.45;color:var(--fg);max-width:60ch}
+.story-sign .hand{font-size:22px;color:var(--blue-ink);transform:rotate(-3deg)}
+
+/* footer / cta */
+.cta{background:linear-gradient(135deg,#6aaecb 0%,#62a5c0 45%,#5799b4 100%);color:#fff}
+.cta h2{color:#fff}.cta .lede{color:#fff}.cta .eyebrow{color:#fff}.cta .eyebrow::before{background:#fff}
+.cta .wrap{display:grid;gap:32px;align-items:start}
+@media(min-width:800px){.cta .wrap{grid-template-columns:1.3fr 1fr;gap:56px}.cta .form{position:sticky;top:96px}}
+.cta-list{list-style:none;display:grid;gap:10px;margin-top:18px}
+.cta-list li{position:relative;padding-left:30px;color:#fff;font-size:16.5px}
+.cta-list li::before{content:"";position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.5l2.6 2.5L14 7.5' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.cta-sign{margin-top:18px;font-family:var(--font-display);font-size:22px;font-weight:600;color:#fff}
+footer{padding-block:34px;border-top:1px solid var(--line);font-size:14px;color:var(--muted-2)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center}
+footer .logo{height:24px}
+footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
+.consent{position:fixed;z-index:90;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:560px;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;font-size:14px;color:var(--muted)}
+.consent p{flex:1 1 260px;margin:0}
+.consent .actions{display:flex;gap:8px;margin-left:auto}
+.consent .btn{padding:9px 16px;font-size:14px}
+.page{display:none}.page.show{display:block}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* e-mail chooser (mailto links do nothing on machines without a mail app) */
+.mailmenu{position:absolute;z-index:80;min-width:220px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;display:grid;gap:2px;font-family:var(--font-body);font-size:14px}
+.mailmenu a,.mailmenu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 12px;border:0;border-radius:8px;background:transparent;color:var(--fg);font:inherit;text-decoration:none;cursor:pointer}
+.mailmenu a:hover,.mailmenu button:hover,.mailmenu a:focus-visible,.mailmenu button:focus-visible{background:var(--blue-pale);outline:none}
+.mailmenu .addr{padding:6px 12px 8px;font-family:var(--font-mono);font-size:12px;color:var(--muted-2);border-bottom:1px solid var(--line);margin-bottom:4px;word-break:break-all}
+.mailmenu .done{color:var(--ok-fg)}
+
+/* language switcher */
+.lang{display:flex;align-items:center;gap:2px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em}
+.lang a{color:var(--muted-2);text-decoration:none;padding:6px 7px;border-radius:6px;line-height:1}
+.lang a:hover{color:var(--fg);background:var(--mist)}
+.lang a[aria-current]{color:var(--blue-ink);background:var(--blue-pale)}
+.nav .lang-top{margin-left:2px}
+.nav .lang-select{display:none;font:500 12px/1 var(--font-mono);letter-spacing:.04em;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 4px 7px 6px;cursor:pointer}
+.nav .menu a{white-space:nowrap}
+.nav .brand{flex:none} .nav .brand .tag{white-space:nowrap}
+.nav>.wrap:not(.mobile-nav){gap:16px}
+@media(max-width:1280px){.nav .brand .tag{display:none}}
+/* German / Italian menu items are long: switch to the compact header (pill row + dropdown) below 1060px */
+@media(max-width:1060px){.nav .menu a:not(.btn){display:none} .nav .brand .tag{display:none} .nav .mobile-nav{display:flex}
+  .nav .lang-top{display:none} .nav .lang-select{display:block} .nav>.wrap:not(.mobile-nav){gap:10px}}
+</style>
+<!-- Google tag (gtag.js) · Google Ads AW-17071627520 · Consent Mode v2: denied until the visitor accepts -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500});
+  try { if (localStorage.getItem('ls_consent') === 'granted') gtag('consent', 'update', {ad_storage:'granted', ad_user_data:'granted', ad_personalization:'granted', analytics_storage:'granted'}); } catch (e) {}
+  gtag('set', 'url_passthrough', true);    // keep the ad click ID without cookies
+  gtag('set', 'ads_data_redaction', true);  // redact ad click data while ad_storage is denied
+  gtag('js', new Date());
+  gtag('config', 'AW-17071627520');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17071627520"></script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0" aria-hidden="true" focusable="false"><symbol id="neatly-logo" viewBox="0 0 183.663 66.606"><g> <path fill="currentColor" d="M87.380313,22.00064v22.765874h-1.448681l-17.308525-19.897601v19.897601h-1.760036v-22.765874h1.491104l17.26576,19.897602v-19.897602h1.760379Z"/> <path fill="currentColor" d="M106.412951,22.00064v1.466812h-10.657743v9.109497h10.380937v1.482895h-10.380937v9.239858h10.918468v1.46647h-12.678504v-22.765532h12.417779Z"/> <path fill="currentColor" d="M120.640728,21.837775l10.524983,22.92874h-1.84626l-3.601509-7.870901h-11.133675l-3.588169,7.870901h-1.846602l10.524306-22.928741h.966926ZM125.04664,35.428801l-4.90546-10.722753-4.888687,10.722753h9.794147Z"/> <path fill="currentColor" d="M147.591824,22.00064v1.466812h-8.539473v21.299062h-1.776116v-21.299062h-8.539473v-1.466812h18.855062Z"/> <path fill="currentColor" d="M152.805908,22.00064v21.299062h11.260613v1.46647h-13.020649v-22.765532h1.760036Z"/> <path fill="currentColor" d="M181.688802,22.00064l-8.848781,10.543806v12.222068h-1.760036v-12.222068l-8.848781-10.543806h2.127517l7.612233,9.01917,7.569464-9.01917h2.148384Z"/> <path fill="currentColor" d="M181.524909,41.523584v3.242931h-2.167547v-3.242933h2.167547v.000002Z"/> </g> <polygon fill="#62a5c0" points="16.98877 44.773438 15.688965 44.773438 15.688965 8.344238 35.356934 0 57.105957 14.339844 57.105957 44.772949 55.806152 44.772949 55.806152 15.040039 35.223145 1.46875 16.98877 9.20459 16.98877 44.773438"/> <rect fill="#62a5c0" x="34.640137" y=".829102" width="1.299805" height="43.944336"/> <g> <path fill="currentColor" d="M3.849609,65.235352c-.821289,0-1.50293-.267578-2.04541-.801758-.541992-.535156-.813477-1.205078-.813477-2.010742s.271484-1.476562.813477-2.010742c.54248-.53418,1.224121-.801758,2.04541-.801758s1.503418.267578,2.045898.801758c.541992.53418.813477,1.205078.813477,2.010742,0,.526367-.123047,1.005859-.368164,1.4375-.245605.430664-.586426.767578-1.022949,1.010742s-.925781.364258-1.468262.364258ZM2.455078,63.821289c.37207.375.837891.561523,1.398438.561523s1.025391-.186523,1.39502-.561523c.369141-.374023.553711-.84082.553711-1.398438s-.18457-1.024414-.553711-1.398438c-.369629-.375-.834473-.561523-1.39502-.561523s-1.026367.186523-1.398438.561523c-.371582.374023-.557617.84082-.557617,1.398438s.186035,1.024414.557617,1.398438Z"/> <path fill="currentColor" d="M11.922852,59.710938h.875977v5.423828h-.751953l-2.8125-3.874023v3.874023h-.875488v-5.423828h.806152l2.757812,3.811523v-3.811523Z"/> <path fill="currentColor" d="M15.688477,64.290039h2.347656v.844727h-3.23877v-5.423828h3.15332v.836914h-2.262207v1.410156h2.061035v.821289h-2.061035v1.510742Z"/> <path fill="currentColor" d="M23.994141,65.219727c-.407715,0-.765625-.072266-1.072754-.216797-.307617-.144531-.546387-.352539-.716797-.624023-.17041-.270508-.255859-.586914-.255859-.949219h.898926c0,.290039.106934.518555.321289.685547.214355.167969.486816.251953.817383.251953.299805,0,.552734-.073242.759277-.220703s.310059-.339844.310059-.577148c0-.087891-.01416-.167969-.04248-.240234s-.075195-.133789-.139648-.185547-.126465-.09668-.186035-.135742c-.059082-.039062-.146973-.076172-.263184-.112305s-.210449-.063477-.282715-.081055c-.072266-.018555-.181152-.045898-.325684-.082031-.160156-.036133-.28125-.06543-.36377-.088867-.083008-.023438-.197754-.05957-.345215-.108398-.146973-.048828-.260742-.09668-.34082-.143555-.080078-.045898-.174316-.109375-.282715-.189453s-.189941-.165039-.244141-.255859-.102051-.200195-.143066-.329102c-.041504-.128906-.062012-.274414-.062012-.43457,0-.485352.171387-.864258.515137-1.138672.343262-.273438.804199-.410156,1.382812-.410156.588867,0,1.048828.148438,1.379395.445312s.495605.701172.495605,1.212891h-.883301c0-.258789-.094238-.461914-.282715-.608398-.188477-.147461-.429688-.220703-.724121-.220703-.28418,0-.520508.060547-.708984.181641-.188965.121094-.282715.291016-.282715.507812,0,.092773.022949.177734.069336.255859.046875.077148.101074.140625.163086.189453s.154785.09668.278809.143555c.124023.045898.228516.081055.313477.104492.085449.023438.210449.055664.375977.09668.128906.03125.226074.054688.290527.069336.064453.015625.158691.042969.282715.082031.124023.038086.219727.072266.286621.100586.067383.02832.152344.068359.255859.120117s.183105.103516.240234.154297c.056641.051758.120117.116211.189941.194336.069824.077148.122559.158203.158691.244141.036133.084961.066895.183594.092773.293945.025879.111328.039062.228516.039062.352539,0,.527344-.186035.936523-.558105,1.228516-.371582.291992-.841797.4375-1.410156.4375Z"/> <path fill="currentColor" d="M31.068359,59.710938v.829102h-1.596191v4.594727h-.883301v-4.594727h-1.596191v-.829102h4.075684Z"/> <path fill="currentColor" d="M34.825684,65.235352c-.821289,0-1.50293-.267578-2.04541-.801758-.541992-.535156-.813477-1.205078-.813477-2.010742s.271484-1.476562.813477-2.010742c.54248-.53418,1.224121-.801758,2.04541-.801758s1.503418.267578,2.045898.801758c.541992.53418.813477,1.205078.813477,2.010742,0,.526367-.123047,1.005859-.368164,1.4375-.245605.430664-.586426.767578-1.022949,1.010742s-.925781.364258-1.468262.364258ZM33.431152,63.821289c.37207.375.837891.561523,1.398438.561523s1.025391-.186523,1.39502-.561523c.369141-.374023.553711-.84082.553711-1.398438s-.18457-1.024414-.553711-1.398438c-.369629-.375-.834473-.561523-1.39502-.561523s-1.026367.186523-1.398438.561523c-.371582.374023-.557617.84082-.557617,1.398438s.186035,1.024414.557617,1.398438Z"/> <path fill="currentColor" d="M41.341797,59.710938c.346191,0,.659668.077148.941406.232422.28125.155273.502441.369141.662598.643555.159668.273438.240234.578125.240234.914062,0,.510742-.175781.9375-.526855,1.27832-.351562.34082-.790527.510742-1.317383.510742h-1.115723v1.844727h-.891113v-5.423828h2.006836ZM41.29541,62.446289c.144531,0,.277344-.023438.398926-.070312.121094-.045898.226074-.110352.313965-.193359.087402-.083008.155762-.183594.205078-.302734.049316-.118164.07373-.245117.07373-.378906,0-.180664-.04248-.342773-.12793-.484375-.084961-.142578-.202637-.254883-.352539-.336914-.149902-.083008-.320312-.124023-.51123-.124023h-1.069336v1.890625h1.069336Z"/> <path fill="currentColor" d="M47.423828,66.606445v-7.980469h.612305v7.980469h-.612305Z"/> <path fill="currentColor" d="M53.467285,64.483398h2.479492v.651367h-3.153809v-5.423828h3.068359v.643555h-2.394043v1.680664h2.192383v.62793h-2.192383v1.820312Z"/> <path fill="currentColor" d="M61.35498,59.710938h.666504v5.423828h-.57373l-3.091309-4.230469v4.230469h-.658691v-5.423828h.612305l3.044922,4.183594v-4.183594Z"/> <path fill="currentColor" d="M65.92627,59.710938c.794922,0,1.452637.255859,1.97168.766602.519043.511719.778809,1.160156.778809,1.945312s-.259766,1.433594-.778809,1.944336c-.519043.511719-1.176758.767578-1.97168.767578h-1.805664v-5.423828h1.805664ZM65.902832,64.499023c.609375,0,1.10791-.196289,1.495117-.588867.387695-.392578.581543-.887695.581543-1.487305,0-.397461-.087891-.753906-.263672-1.069336s-.420898-.561523-.73584-.740234c-.31543-.177734-.674316-.266602-1.077148-.266602h-1.10791v4.152344h1.10791Z"/> <path fill="currentColor" d="M71.09375,64.499023h2.38623v.635742h-3.060547v-5.423828h.674316v4.788086Z"/> <path fill="currentColor" d="M75.680664,64.483398h2.479492v.651367h-3.153809v-5.423828h3.068359v.643555h-2.394043v1.680664h2.192383v.62793h-2.192383v1.820312Z"/> <path fill="currentColor" d="M81.522461,65.204102c-.599121,0-1.082031-.157227-1.44873-.472656-.367188-.314453-.550293-.738281-.550293-1.270508h.689453c0,.331055.121582.592773.364258.786133.242676.194336.555176.291016.9375.291016.227051,0,.432617-.037109.615723-.112305.183594-.075195.330566-.18457.441895-.329102.11084-.144531.166504-.310547.166504-.496094,0-.087891-.01416-.168945-.04248-.244141s-.062012-.138672-.100586-.189453c-.039062-.051758-.097168-.102539-.174316-.151367-.077637-.048828-.14502-.087891-.20166-.116211-.057129-.02832-.143555-.060547-.259766-.09668s-.206543-.0625-.270996-.078125-.164062-.038086-.29834-.069336c-.160156-.041016-.282715-.072266-.368164-.092773-.084961-.020508-.200195-.055664-.344727-.104492-.144531-.049805-.256836-.095703-.336914-.139648s-.17334-.104492-.278809-.182617c-.105957-.077148-.186035-.160156-.240234-.248047-.054199-.086914-.100586-.194336-.139648-.321289-.038574-.125977-.058105-.264648-.058105-.414062,0-.464844.166504-.833008.5-1.104492.333008-.271484.78125-.40625,1.344238-.40625s1.005859.144531,1.328613.433594.484375.678711.484375,1.169922h-.674316c0-.294922-.106934-.527344-.321289-.697266-.214355-.170898-.489746-.255859-.825195-.255859-.34082,0-.618652.075195-.833008.224609-.214355.150391-.321289.351562-.321289.604492,0,.083008.012695.15918.038574.228516s.058105.130859.09668.181641c.039062.051758.095703.101562.17041.147461.075195.046875.140625.083984.197754.112305.056641.02832.140625.05957.251953.092773.11084.03418.200195.058594.26709.074219s.165527.040039.294434.073242c.128906.03418.226074.058594.290527.074219.064453.014648.157715.041016.278809.077148.121582.036133.21582.068359.283203.09668.066895.02832.150879.067383.251465.116211.101074.048828.179688.099609.236328.151367.057129.051758.120117.113281.189941.185547s.121094.150391.154785.232422c.033691.083008.063477.178711.089355.287109s.038574.22168.038574.34082c0,.500977-.179199.894531-.538574,1.181641-.358887.286133-.817383.429688-1.375.429688Z"/> <path fill="currentColor" d="M86.767578,65.204102c-.599121,0-1.082031-.157227-1.44873-.472656-.367188-.314453-.550293-.738281-.550293-1.270508h.689453c0,.331055.121582.592773.364258.786133.242676.194336.555176.291016.9375.291016.227051,0,.432617-.037109.615723-.112305.183594-.075195.330566-.18457.441895-.329102.11084-.144531.166504-.310547.166504-.496094,0-.087891-.01416-.168945-.04248-.244141s-.062012-.138672-.100586-.189453c-.039062-.051758-.097168-.102539-.174316-.151367-.077637-.048828-.14502-.087891-.20166-.116211-.057129-.02832-.143555-.060547-.259766-.09668s-.206543-.0625-.270996-.078125-.164062-.038086-.29834-.069336c-.160156-.041016-.282715-.072266-.368164-.092773-.084961-.020508-.200195-.055664-.344727-.104492-.144531-.049805-.256836-.095703-.336914-.139648s-.17334-.104492-.278809-.182617c-.105957-.077148-.186035-.160156-.240234-.248047-.054199-.086914-.100586-.194336-.139648-.321289-.038574-.125977-.058105-.264648-.058105-.414062,0-.464844.166504-.833008.5-1.104492.333008-.271484.78125-.40625,1.344238-.40625s1.005859.144531,1.328613.433594.484375.678711.484375,1.169922h-.674316c0-.294922-.106934-.527344-.321289-.697266-.214355-.170898-.489746-.255859-.825195-.255859-.34082,0-.618652.075195-.833008.224609-.214355.150391-.321289.351562-.321289.604492,0,.083008.012695.15918.038574.228516s.058105.130859.09668.181641c.039062.051758.095703.101562.17041.147461.075195.046875.140625.083984.197754.112305.056641.02832.140625.05957.251953.092773.11084.03418.200195.058594.26709.074219s.165527.040039.294434.073242c.128906.03418.226074.058594.290527.074219.064453.014648.157715.041016.278809.077148.121582.036133.21582.068359.283203.09668.066895.02832.150879.067383.251465.116211.101074.048828.179688.099609.236328.151367.057129.051758.120117.113281.189941.185547s.121094.150391.154785.232422c.033691.083008.063477.178711.089355.287109s.038574.22168.038574.34082c0,.500977-.179199.894531-.538574,1.181641-.358887.286133-.817383.429688-1.375.429688Z"/> <path fill="currentColor" d="M94.996094,59.710938c.511719,0,.9375.165039,1.28125.496094.34375.330078.515625.743164.515625,1.239258s-.171875.90918-.515625,1.240234c-.34375.330078-.769531.495117-1.28125.495117h-1.271484v1.953125h-.673828v-5.423828h1.945312ZM94.957031,62.523438c.330078,0,.603516-.101562.816406-.305664.214844-.204102.322266-.460938.322266-.771484,0-.30957-.107422-.566406-.322266-.770508-.212891-.204102-.486328-.306641-.816406-.306641h-1.232422v2.154297h1.232422Z"/> <path fill="currentColor" d="M101.550781,65.134766l-1.240234-2.123047h-1.239258v2.123047h-.673828v-5.423828h2.052734c.511719,0,.933594.15625,1.266602.46875.333984.3125.5.708984.5,1.189453,0,.376953-.108398.706055-.325195.987305-.216797.282227-.506836.474609-.868164.578125l1.293945,2.200195h-.766602ZM99.071289,60.354492v2.013672h1.347656c.326172,0,.591797-.09375.798828-.282227.206055-.188477.30957-.430664.30957-.724609,0-.294922-.103516-.536133-.30957-.724609-.207031-.188477-.472656-.282227-.798828-.282227h-1.347656Z"/> <path fill="currentColor" d="M108.507812,64.429688c-.537109.532227-1.214844.797852-2.033203.797852-.819336,0-1.49707-.265625-2.03418-.797852s-.805664-1.200195-.805664-2.00293c0-.803711.268555-1.472656.805664-2.006836s1.214844-.801758,2.03418-.801758c.818359,0,1.496094.265625,2.033203.797852s.805664,1.201172.805664,2.006836-.268555,1.474609-.805664,2.006836ZM104.94043,63.949219c.405273.408203.916992.612305,1.53418.612305s1.12793-.203125,1.53418-.608398c.405273-.405273.607422-.916016.607422-1.530273,0-.615234-.202148-1.125-.607422-1.530273-.40625-.405273-.916992-.608398-1.53418-.608398s-1.128906.204102-1.53418.612305c-.40625.408203-.608398.916992-.608398,1.526367s.202148,1.118164.608398,1.526367Z"/> <path fill="currentColor" d="M112.994141,59.710938c.511719,0,.938477.165039,1.282227.496094.34375.330078.515625.743164.515625,1.239258s-.171875.90918-.515625,1.240234c-.34375.330078-.770508.495117-1.282227.495117h-1.270508v1.953125h-.673828v-5.423828h1.944336ZM112.955078,62.523438c.331055,0,.603516-.101562.817383-.305664.214844-.204102.322266-.460938.322266-.771484,0-.30957-.107422-.566406-.322266-.770508-.213867-.204102-.486328-.306641-.817383-.306641h-1.231445v2.154297h1.231445Z"/> <path fill="currentColor" d="M117.069336,64.483398h2.479492v.651367h-3.15332v-5.423828h3.067383v.643555h-2.393555v1.680664h2.192383v.62793h-2.192383v1.820312Z"/> <path fill="currentColor" d="M124.453125,65.134766l-1.240234-2.123047h-1.239258v2.123047h-.673828v-5.423828h2.052734c.511719,0,.933594.15625,1.266602.46875.333984.3125.5.708984.5,1.189453,0,.376953-.108398.706055-.325195.987305-.216797.282227-.506836.474609-.868164.578125l1.293945,2.200195h-.766602ZM121.973633,60.354492v2.013672h1.347656c.326172,0,.591797-.09375.798828-.282227.206055-.188477.30957-.430664.30957-.724609,0-.294922-.103516-.536133-.30957-.724609-.207031-.188477-.472656-.282227-.798828-.282227h-1.347656Z"/> <path fill="currentColor" d="M130.225586,59.710938v.635742h-1.650391v4.788086h-.681641v-4.788086h-1.650391v-.635742h3.982422Z"/> <path fill="currentColor" d="M135.904297,59.710938l-1.999023,3.261719v2.162109h-.697266v-2.162109l-1.991211-3.261719h.744141l1.595703,2.619141,1.604492-2.619141h.743164Z"/> <path fill="currentColor" d="M142.328125,65.219727c-.805664,0-1.470703-.263672-1.995117-.790039-.524414-.527344-.786133-1.196289-.786133-2.006836s.261719-1.480469.786133-2.006836c.524414-.527344,1.189453-.790039,1.995117-.790039.413086,0,.796875.078125,1.150391.236328.354492.157227.65332.380859.899414.669922.245117.289062.416992.62793.514648,1.014648h-.689453c-.144531-.392578-.381836-.699219-.712891-.921875-.330078-.22168-.717773-.333008-1.162109-.333008-.609375,0-1.109375.200195-1.499023.600586-.390625.400391-.584961.912109-.584961,1.53418s.194336,1.132812.584961,1.530273c.389648.397461.889648.59668,1.499023.59668.454102,0,.849609-.118164,1.185547-.352539.335938-.235352.573242-.5625.712891-.980469h.697266c-.155273.615234-.46582,1.101562-.933594,1.460938-.467773.358398-1.021484.538086-1.662109.538086Z"/> <path fill="currentColor" d="M151.051758,64.429688c-.537109.532227-1.214844.797852-2.033203.797852-.819336,0-1.49707-.265625-2.03418-.797852s-.805664-1.200195-.805664-2.00293c0-.803711.268555-1.472656.805664-2.006836s1.214844-.801758,2.03418-.801758c.818359,0,1.496094.265625,2.033203.797852s.805664,1.201172.805664,2.006836-.268555,1.474609-.805664,2.006836ZM147.484375,63.949219c.405273.408203.916992.612305,1.53418.612305s1.12793-.203125,1.53418-.608398c.405273-.405273.607422-.916016.607422-1.530273,0-.615234-.202148-1.125-.607422-1.530273-.40625-.405273-.916992-.608398-1.53418-.608398s-1.128906.204102-1.53418.612305c-.40625.408203-.608398.916992-.608398,1.526367s.202148,1.118164.608398,1.526367Z"/> <path fill="currentColor" d="M159.876953,65.134766h-.689453l-.705078-4.238281-1.875,4.098633h-.178711l-1.875-4.09082-.705078,4.230469h-.697266l.914062-5.423828h.651367l1.796875,3.982422,1.797852-3.982422h.666016l.899414,5.423828Z"/> <path fill="currentColor" d="M164.634766,60.354492h-2.371094v1.789062h2.168945v.635742h-2.168945v2.355469h-.673828v-5.423828h3.044922v.643555Z"/> <path fill="currentColor" d="M170.700195,64.429688c-.537109.532227-1.214844.797852-2.033203.797852-.819336,0-1.49707-.265625-2.03418-.797852s-.805664-1.200195-.805664-2.00293c0-.803711.268555-1.472656.805664-2.006836s1.214844-.801758,2.03418-.801758c.818359,0,1.496094.265625,2.033203.797852s.805664,1.201172.805664,2.006836-.268555,1.474609-.805664,2.006836ZM167.132812,63.949219c.405273.408203.916992.612305,1.53418.612305s1.12793-.203125,1.53418-.608398c.405273-.405273.607422-.916016.607422-1.530273,0-.615234-.202148-1.125-.607422-1.530273-.40625-.405273-.916992-.608398-1.53418-.608398s-1.128906.204102-1.53418.612305c-.40625.408203-.608398.916992-.608398,1.526367s.202148,1.118164.608398,1.526367Z"/> <path fill="currentColor" d="M176.395508,65.134766l-1.240234-2.123047h-1.239258v2.123047h-.673828v-5.423828h2.052734c.511719,0,.933594.15625,1.266602.46875.333984.3125.5.708984.5,1.189453,0,.376953-.108398.706055-.325195.987305-.216797.282227-.506836.474609-.868164.578125l1.293945,2.200195h-.766602ZM173.916016,60.354492v2.013672h1.347656c.326172,0,.591797-.09375.798828-.282227.206055-.188477.30957-.430664.30957-.724609,0-.294922-.103516-.536133-.30957-.724609-.207031-.188477-.472656-.282227-.798828-.282227h-1.347656Z"/> <path fill="currentColor" d="M182.167969,59.710938v.635742h-1.650391v4.788086h-.681641v-4.788086h-1.650391v-.635742h3.982422Z"/> <path fill="currentColor" d="M182.904297,65.134766v-.821289h.758789v.821289h-.758789Z"/> </g> <polygon fill="#62a5c0" points="27.724182 13.272583 0 24.914551 0 44.773438 1.299805 44.773438 1.299805 25.778809 27.724182 14.682007 27.724182 13.272583"/></symbol></svg>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#hotels"><svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg><span class="tag">Laundry OS</span></a>
+    <nav class="menu" aria-label="Menu principal"><a data-page="hotels" href="#hotels">Blanchisseries d'hôtel</a> <a data-page="airbnb" href="#airbnb">Blanchisseries d'appartements + hôtels</a> <a href="#pricing">Tarifs</a> <a class="btn sm" href="#demo">Réserver une démo</a></nav>
+    <select class="lang-select" aria-label="Langue"><option value="/">EN</option><option value="/de/">DE</option><option value="/it/">IT</option><option value="/es/">ES</option><option value="/fr/" selected>FR</option></select>
+    <nav class="lang lang-top" aria-label="Langue"><a href="/" data-base="/" hreflang="en" lang="en">EN</a><a href="/de/" data-base="/de/" hreflang="de" lang="de">DE</a><a href="/it/" data-base="/it/" hreflang="it" lang="it">IT</a><a href="/es/" data-base="/es/" hreflang="es" lang="es">ES</a><a href="/fr/" data-base="/fr/" hreflang="fr" lang="fr" aria-current="true">FR</a></nav>
+  </div>
+  <nav class="mobile-nav wrap" aria-label="Pages"><a data-page="hotels" href="#hotels">Blanchisseries d'hôtel</a> <a data-page="airbnb" href="#airbnb">Blanchisseries d'appartements + hôtels</a> <a href="#pricing">Tarifs</a></nav>
+</header>
+
+<!-- ════════════════ HOTEL LAUNDRIES PAGE ════════════════ -->
+<main id="page-hotels" class="page show">
+
+<div class="hero tint">
+  <div class="wrap grid">
+    <div>
+      <div class="eyebrow">Logiciel de blanchisserie, né dans une blanchisserie</div>
+      <h1>Un seul système, du chariot de linge sale à la facture payée.</h1>
+      <p class="lede">Nous exploitons nous-mêmes une blanchisserie. Pendant des années, nous avons cherché un logiciel capable de suivre un chariot depuis l'enlèvement, à travers l'usine, jusqu'au relevé de fin de mois, sans jamais le trouver. Alors nous l'avons construit, et notre usine tourne avec lui tous les jours depuis. Il est maintenant prêt pour la vôtre.</p>
+      <div class="actions"><a class="btn" href="#demo">Réserver une démo de 30 minutes</a> <a class="btn ghost" href="mailto:mate.kiraly@neatly.eu?subject=Neatly%20Laundry%20OS%20%E2%80%93%20hotel%20laundry">Écrivez-nous</a></div>
+    </div>
+    <div class="macbook">
+      <div class="screen">
+        <div class="fit" data-w="760"><div class="portal" role="img" aria-label="Hotel portal dashboard: 75 deliveries, 123,000 textile items, 3 hotels, €48,600 net total">
+          <div class="side">
+            <div class="plogo"><svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg><i>Hotel</i></div>
+            <div class="grp">HOTEL PORTAL</div>
+            <a class="on">Dashboard</a><a>Order history</a><a>My hotels</a><a>Shop</a>
+            <div class="grp">FINANCE</div>
+            <a>Statements</a><a>Invoices</a><a>Settings</a>
+            <div class="user"><b>The Harbor Grand Hotel</b>hotel account</div>
+          </div>
+          <div class="main">
+            <h5>Dashboard</h5>
+            <div class="sub">August 2026 · monthly summary</div>
+            <div class="tiles">
+              <div class="tile"><div class="k">Deliveries</div><div class="v">75</div><div class="d">cycles delivered this month</div></div>
+              <div class="tile"><div class="k">Textile items</div><div class="v">123,000</div><div class="d">pieces delivered in total</div></div>
+              <div class="tile"><div class="k">Hotels</div><div class="v">3</div><div class="d">active properties</div></div>
+              <div class="tile hi"><div class="k">Net total</div><div class="v">€48,600</div><div class="d">August 2026 · laundry service</div></div>
+            </div>
+            <div class="panels">
+              <div class="panel"><h6>Delivered textile by type</h6>
+                <div class="row"><span style="width:84px">Bath towels</span><div class="bar"><i style="width:100%"></i></div><span class="n">30,000</span></div>
+                <div class="row"><span style="width:84px">Hand towels</span><div class="bar"><i style="width:100%"></i></div><span class="n">30,000</span></div>
+                <div class="row"><span style="width:84px">Pillowcases</span><div class="bar"><i style="width:80%"></i></div><span class="n">24,000</span></div>
+                <div class="row"><span style="width:84px">Sheets</span><div class="bar"><i style="width:53%"></i></div><span class="n">16,000</span></div>
+                <div class="row"><span style="width:84px">Duvet covers</span><div class="bar"><i style="width:47%"></i></div><span class="n">14,000</span></div>
+                <div class="row"><span style="width:84px">Bath mats</span><div class="bar"><i style="width:30%"></i></div><span class="n">9,000</span></div>
+              </div>
+              <div class="panel"><h6>Net cost by property</h6>
+                <div class="row"><span style="flex:1">The Harbor Grand Hotel</span><span class="n">€31,920</span></div>
+                <div class="row"><span style="flex:1">Maple Street Boutique Hotel</span><span class="n">€4,920</span></div>
+                <div class="row"><span style="flex:1">Riverside Design Hotel</span><span class="n">€11,760</span></div>
+                <div class="row sum"><span style="flex:1">Total (August 2026)</span><span class="n">€48,600</span></div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+      <div class="base"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROOF STRIP -->
+<div class="proof" aria-label="Neatly en chiffres">
+  <div class="wrap">
+    <div><b>2016</b><span>année d'ouverture de notre blanchisserie</span></div>
+    <div><b>15+</b><span>hôtels clients</span></div>
+    <div><b>~2 000</b><span>appartements servis chaque jour</span></div>
+    <div><b>50</b><span>personnes dans l'équipe</span></div>
+    <div><b>17</b><span>véhicules dans la flotte</span></div>
+    <div><b>365</b><span>jours de livraison par an</span></div>
+  </div>
+</div>
+
+<!-- 0 MANIFESTO -->
+<section class="manifesto" id="about">
+  <div class="wrap">
+    <div class="mgrid">
+      <div class="mcol">
+        <div class="mk">D'où nous venons</div>
+        <p class="mlead">Pendant des années, nous avons cherché le bon logiciel sans le trouver, alors nous avons construit le nôtre. Tout le monde nous disait qu'une blanchisserie était trop chaotique pour tenir dans un logiciel.</p>
+        <p>Cela a pris des années, mais il existe, et il s'adapte à votre façon de travailler. Chaque blanchisserie a des processus qui s'écartent du manuel. C'est pour cela que nous l'avons conçu.</p>
+      </div>
+      <div class="mcol">
+        <div class="mk">Qui nous sommes</div>
+        <p class="mlead">Nous ne sommes pas un éditeur de logiciels qui a découvert les blanchisseries. Nous exploitons une blanchisserie et une activité de location de linge, avec notre propre équipe logicielle.</p>
+        <p>Si ce que vous voyez ici ressemble à votre usine, écrivez-nous. Nous vous montrerons un cycle complet et vous dirons franchement ce que demande le changement. Le résultat : une blanchisserie dans laquelle vos clients voient clair, et des chiffres pour la piloter.</p>
+      </div>
+      <div class="mcol">
+        <div class="mk">Ce qui change</div>
+        <p class="mlead">Décidez maintenant, et dans un ou deux mois votre usine fonctionnera autrement.</p>
+        <p>Moins d'appels, plus de bons de livraison papier, des factures qui partent toutes seules. Nous le savons, car nous avons fait le même changement.</p>
+        <a class="btn" href="#demo" style="margin-top:22px">Lancer la conversation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1 CLIENT PORTAL -->
+<section id="portal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">01 · Portail client</div>
+      <h2>Vous avez signé un nouveau client. C'est important. Offrez-lui maintenant un portail digne de ce nom.</h2>
+      <p class="lede">Aujourd'hui, tout le monde attend une interface claire et agréable pour voir où en sont les choses. Pourquoi en serait-il autrement pour un directeur d'hôtel ou une gouvernante générale ? Dans leur propre portail, ils voient chaque enlèvement, où se trouve leur linge en ce moment et le relevé de fin de mois. Les questions qui arrivaient par téléphone trouvent leur réponse toutes seules.</p>
+      <p class="lede" style="margin-top:14px">D'après notre expérience, seules quelques blanchisseries mettent un tel outil entre les mains de leurs clients. Une fois qu'un hôtel l'a, et que la qualité du lavage est au rendez-vous, il ne revient pas vers un prestataire qui ne le propose pas. Profitez de cet avantage.</p>
+    </div>
+
+    <div class="feat">
+      <div class="copy">
+        <div class="stepnum">SUIVI DES CYCLES</div>
+        <h3>Chaque cycle, traçable de bout en bout.</h3>
+        <p style="margin-top:10px;color:var(--muted)">L'hôtel voit si son linge vient d'arriver à l'usine, est en cours de conditionnement ou est déjà dans la camionnette du retour. Chaque étape est horodatée, avec le poids et l'opérateur.</p>
+        <div class="timeline" aria-label="États du cycle">
+          <div class="done">Enlèvement</div><div class="done">Réception</div><div class="done">Lavage</div><div class="now">Conditionnement</div><div>En route</div><div>Livré</div>
+        </div>
+        <ul>
+          <li><b>Réception à l'usine</b> avec numéro de chariot et horodatage</li>
+          <li><b>Conditionnement</b> avec le nombre de pièces par type de textile</li>
+          <li><b>Cycles clôturés</b> consultables et exportables</li>
+        </ul>
+        <div class="callout"><b>Balance ou poids prédéfinis, à vous de choisir.</b> Certaines usines pèsent chaque chariot à la réception ; d'autres saisissent une fois le poids de chaque type de textile et laissent le système calculer les kilos à partir des pièces. Nous connaissons les deux méthodes et utilisons les deux. Le système accepte l'une, l'autre ou un mélange.</div>
+      </div>
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><span>portal.yourlaundry.com/orders</span></div>
+        <div class="fit" data-w="700"><div class="portal wide" role="img" aria-label="Order history: list of cycles per hotel with In progress and Closed statuses">
+          <div class="side">
+            <div class="plogo"><svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg><i>Hotel</i></div>
+            <div class="grp">HOTEL PORTAL</div>
+            <a>Dashboard</a><a class="on">Order history</a><a>My hotels</a><a>Shop</a>
+            <div class="grp">FINANCE</div>
+            <a>Statements</a><a>Invoices</a><a>Settings</a>
+          </div>
+          <div class="main">
+            <h5>Order history</h5>
+            <div class="sub">Every delivery, from dirty pickup to clean handover</div>
+            <div class="note">A cycle starts when the courier scans the dirty cage and ends when the clean textile is handed over. Picking up new dirty linen opens the next cycle right away.</div>
+            <div class="list">
+              <div class="cyc"><div class="grow">The Harbor Grand Hotel<small>Delivery cycle · dirty picked up Aug 5, 2026 07:58</small></div><span class="id">C-2026-0512</span><span class="st open">In progress</span></div>
+              <div class="cyc"><div class="grow">Maple Street Boutique Hotel<small>Delivery cycle · dirty picked up Aug 5, 2026 08:44</small></div><span class="id">C-2026-0509</span><span class="st open">In progress</span></div>
+              <div class="cyc"><div class="grow">The Harbor Grand Hotel<small>Delivery cycle · dirty picked up Aug 4, 2026 08:03</small></div><span class="id">C-2026-0505</span><span class="st closed">Closed</span></div>
+              <div class="cyc"><div class="grow">Riverside Design Hotel<small>Delivery cycle · dirty picked up Aug 4, 2026 09:20</small></div><span class="id">C-2026-0501</span><span class="st closed">Closed</span></div>
+              <div class="cyc"><div class="grow">The Harbor Grand Hotel<small>Delivery cycle · dirty picked up Aug 3, 2026 08:01</small></div><span class="id">C-2026-0494</span><span class="st closed">Closed</span></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="twoup" style="margin-top:40px">
+      <div class="ui">
+        <div class="ui-head">Plant intake <span class="pill ok">02 · recorded</span><span class="right">C-2026-0512</span></div>
+        <div class="ui-row"><div class="grow">The Harbor Grand Hotel<small>dirty picked up Aug 5, 2026 07:58 · courier: M. Johnson</small></div></div>
+        <div class="ui-row"><div class="grow">Intake at the plant<small>Aug 5, 2026 09:12 · scale #2</small></div><span class="mono">8 trolleys</span></div>
+        <div class="ui-row"><div class="grow">Gross weight<small>weighed per trolley · avg 108.3 kg</small></div><span class="mono">866.0 kg</span></div>
+        <div class="ui-row"><div class="grow">Recorded by<small>tablet · intake station</small></div><span class="mono">J. Carter</span></div>
+      </div>
+      <div class="ui">
+        <div class="ui-head">Plant packing <span class="pill info">03 · piece counts</span><span class="right">C-2026-0512</span></div>
+        <div class="tscroll"><table class="t">
+          <thead><tr><th>Item</th><th class="n">kg / pc</th><th class="n">pcs</th><th class="n">kg</th></tr></thead>
+          <tr><td>Bath towel 70×140</td><td class="n">0.39</td><td class="n">600</td><td class="n">235.2</td></tr>
+          <tr><td>Hand towel 50×100</td><td class="n">0.20</td><td class="n">600</td><td class="n">120.0</td></tr>
+          <tr><td>Duvet cover 140×200</td><td class="n">0.71</td><td class="n">300</td><td class="n">214.2</td></tr>
+          <tr><td>Sheet 160×270</td><td class="n">0.52</td><td class="n">380</td><td class="n">196.8</td></tr>
+          <tr><td>Pillowcase 50×70</td><td class="n">0.09</td><td class="n">500</td><td class="n">46.5</td></tr>
+          <tr><td>Bath mat 50×70</td><td class="n">0.23</td><td class="n">200</td><td class="n">45.5</td></tr>
+          <tr><td><b>Total</b></td><td></td><td class="n"><b>2,580</b></td><td class="n"><b>858.2</b></td></tr>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="feat rev" style="margin-top:72px">
+      <div class="copy">
+        <div class="stepnum">FACTURATION AUTOMATIQUE</div>
+        <h3>En fin de mois, c'est le système qui facture. Pas vous.</h3>
+        <ul>
+          <li><b>Facture automatique</b> à partir des cycles clôturés</li>
+          <li><b>Relevé PDF de fin de mois</b> par hôtel, détaillé par cycle</li>
+          <li><b>Rapport Excel / CSV</b> pour la comptabilité, en un clic</li>
+          <li><b>E-mail automatique</b> au service comptable du client, pièces jointes incluses</li>
+        </ul>
+        <a class="btn" href="#demo" style="margin-top:22px">Réserver une démo</a>
+      </div>
+      <div class="ui">
+        <div class="ui-head">Statement · August 2026 <span class="pill live">sent</span><span class="right">Aug 31 · 11:05 PM</span></div>
+        <div class="ui-row"><div class="grow">The Harbor Grand Hotel<small>31 cycles · 26,600 kg · €31,920</small></div><span class="pill">PDF</span><span class="pill">CSV</span><span class="pill ok">e-mail ✓</span></div>
+        <div class="ui-row"><div class="grow">Maple Street Boutique Hotel<small>13 cycles · 4,100 kg · €4,920</small></div><span class="pill">PDF</span><span class="pill">CSV</span><span class="pill ok">e-mail ✓</span></div>
+        <div class="ui-row"><div class="grow">Riverside Design Hotel<small>31 cycles · 9,800 kg · €11,760</small></div><span class="pill">PDF</span><span class="pill">CSV</span><span class="pill ok">e-mail ✓</span></div>
+        <div class="ui-row"><div class="grow"><b>Invoices issued</b><small>invoicing integration · 3 invoices</small></div><span class="mono"><b>€48,600</b></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 QR / COURIER APP -->
+<section class="band" id="courier">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">02 · QR code sur le chariot</div>
+      <h2>Un scan sur place, et le cycle démarre.</h2>
+      <p class="lede">Chaque chariot porte une étiquette plastifiée avec votre logo et un QR code. Le livreur la scanne avec son téléphone, et à partir de ce moment le système suit le linge à travers l'usine jusqu'à la livraison du propre.</p>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 1000 420" role="img" aria-label="Three laundry trolleys side by side, each with a laminated label holding a logo and a QR code">
+        <defs>
+          <linearGradient id="liner" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e3f1f7"/><stop offset="1" stop-color="#bfdce9"/></linearGradient>
+          <linearGradient id="linerTop" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f1f8fb"/><stop offset="1" stop-color="#cfe6f0"/></linearGradient>
+          <linearGradient id="chrome" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8f9ca3"/><stop offset=".5" stop-color="#d9e0e4"/><stop offset="1" stop-color="#8f9ca3"/></linearGradient>
+          <linearGradient id="floor" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e4ebef"/><stop offset="1" stop-color="#cbd6dc"/></linearGradient>
+          <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#16323e" flood-opacity=".25"/></filter>
+          <filter id="soft" x="-10%" y="-10%" width="120%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#16323e" flood-opacity=".18"/></filter>
+          <g id="trolley">
+            <ellipse cx="180" cy="352" rx="130" ry="10" fill="#16323e" opacity=".12"/>
+            <!-- fabric liner -->
+            <rect x="68" y="84" width="224" height="236" rx="6" fill="url(#liner)"/>
+            <path d="M80 100 q10 60 0 120 q-6 50 0 100" stroke="#a9cbdc" stroke-width="2" fill="none" opacity=".7"/>
+            <path d="M150 96 q-8 70 2 130 q6 50 -2 94" stroke="#a9cbdc" stroke-width="2" fill="none" opacity=".6"/>
+            <path d="M232 98 q8 64 -2 128 q-6 48 2 94" stroke="#a9cbdc" stroke-width="2" fill="none" opacity=".6"/>
+            <!-- wire mesh -->
+            <g stroke="#9ba8af" stroke-width="1.4">
+              <line x1="78" y1="86" x2="78" y2="318"/><line x1="90" y1="86" x2="90" y2="318"/><line x1="102" y1="86" x2="102" y2="318"/><line x1="114" y1="86" x2="114" y2="318"/><line x1="126" y1="86" x2="126" y2="318"/><line x1="138" y1="86" x2="138" y2="318"/><line x1="150" y1="86" x2="150" y2="318"/><line x1="162" y1="86" x2="162" y2="318"/>
+              <line x1="198" y1="86" x2="198" y2="318"/><line x1="210" y1="86" x2="210" y2="318"/><line x1="222" y1="86" x2="222" y2="318"/><line x1="234" y1="86" x2="234" y2="318"/><line x1="246" y1="86" x2="246" y2="318"/><line x1="258" y1="86" x2="258" y2="318"/><line x1="270" y1="86" x2="270" y2="318"/><line x1="282" y1="86" x2="282" y2="318"/>
+            </g>
+            <g stroke="#7f8d95" stroke-width="2.6">
+              <line x1="66" y1="138" x2="294" y2="138"/><line x1="66" y1="192" x2="294" y2="192"/><line x1="66" y1="246" x2="294" y2="246"/><line x1="66" y1="300" x2="294" y2="300"/>
+            </g>
+            <!-- liner folded over the rim -->
+            <rect x="58" y="66" width="244" height="24" rx="9" fill="url(#linerTop)" stroke="#a9cbdc"/>
+            <!-- frame posts and rails -->
+            <rect x="60" y="72" width="7" height="246" rx="2" fill="url(#chrome)" stroke="#6f7d85" stroke-width=".8"/>
+            <rect x="293" y="72" width="7" height="246" rx="2" fill="url(#chrome)" stroke="#6f7d85" stroke-width=".8"/>
+            <rect x="177" y="72" width="6" height="246" rx="2" fill="url(#chrome)" stroke="#6f7d85" stroke-width=".8"/>
+            <rect x="60" y="316" width="240" height="8" rx="2" fill="url(#chrome)" stroke="#6f7d85" stroke-width=".8"/>
+            <rect x="56" y="326" width="248" height="10" rx="3" fill="#5e6b73"/>
+            <!-- door latch -->
+            <rect x="170" y="188" width="20" height="14" rx="3" fill="#62a5c0"/>
+            <!-- casters -->
+            <rect x="84" y="336" width="10" height="8" fill="#48545b"/><circle cx="89" cy="350" r="9" fill="#2a3338"/><circle cx="89" cy="350" r="3.5" fill="#8a969c"/>
+            <rect x="266" y="336" width="10" height="8" fill="#48545b"/><circle cx="271" cy="350" r="9" fill="#2a3338"/><circle cx="271" cy="350" r="3.5" fill="#8a969c"/>
+            <!-- laminated A4 label, cable-tied to the mesh -->
+            <g transform="rotate(-1.5 180 190)" filter="url(#sh)">
+              <rect x="135" y="126" width="92" height="130" rx="3" fill="#fff" stroke="#d3dbe0"/>
+              <path d="M135 126 L227 126 L227 170 Z" fill="#fff" opacity=".9"/>
+              <path d="M136 127 L190 127 L136 190 Z" fill="#f4f8fa" opacity=".8"/>
+              <rect x="142" y="123" width="4" height="9" rx="1" fill="#8f9ca3"/><rect x="216" y="123" width="4" height="9" rx="1" fill="#8f9ca3"/>
+              <rect x="145" y="138" width="72" height="22" rx="4" fill="none" stroke="#9ba8af" stroke-dasharray="3 3"/>
+              <text x="181" y="152" text-anchor="middle" font-family="Geist,Arial,sans-serif" font-weight="600" font-size="9.5" fill="#595a5c">YOUR LOGO</text>
+              <g class="qr" data-seed="14" data-size="58" transform="translate(152 168)"></g>
+              <text x="181" y="240" text-anchor="middle" font-family="Geist Mono,monospace" font-size="8.5" fill="#25282b">TROLLEY #14</text>
+              <text x="181" y="250" text-anchor="middle" font-family="Geist Mono,monospace" font-size="6.5" fill="#7c8085">scan to open a cycle</text>
+            </g>
+          </g>
+        </defs>
+        <rect x="0" y="340" width="1000" height="80" fill="url(#floor)"/>
+        <use href="#trolley"/><use href="#trolley" x="320"/><use href="#trolley" x="640"/>
+      </svg>
+    </div>
+
+    <div class="feat" style="margin-top:56px;align-items:start">
+      <div class="copy">
+        <div class="stepnum">APPLI LIVREUR SUR TÉLÉPHONE</div>
+        <h3>Le livreur scanne. Le système enregistre.</h3>
+        <ul>
+          <li><b>Enlèvement du linge sale :</b> le livreur scanne sur place le QR du chariot. Cela <b>ouvre un nouveau cycle</b> qui traverse l'usine jusqu'à la livraison du linge propre</li>
+          <li><b>Livraison du propre :</b> le même scan met à jour le statut du cycle et <b>clôture le cycle de linge sale précédent</b></li>
+          <li><b>Plus de bons de livraison papier</b>, plus de numéros de chariot mal saisis, plus de litiges sur le nombre de pièces</li>
+          <li>Photo et signature sur place, visibles immédiatement dans le portail client</li>
+        </ul>
+        <a class="btn" href="#demo" style="margin-top:22px">Réserver une démo</a>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+        <div class="phone"><div class="scr"><div class="app">
+          <div class="status"><span>7:58 AM</span><span>●●● ▲ ▮</span></div>
+          <div class="head"><span class="back">‹</span><div><b>Dirty pickup</b><small>Harbor Grand · loading dock</small></div></div>
+          <div class="body">
+            <div class="steps"><span class="on" data-l="Scan"></span><span data-l="Photo"></span><span data-l="Done"></span></div>
+            <div class="viewfinder">
+              <svg viewBox="0 0 100 100" style="width:96px" aria-hidden="true"><g class="qr" data-seed="14" data-size="84" fill="#fff" transform="translate(8 8)"></g></svg>
+              <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><i class="scanline"></i>
+            </div>
+            <div class="card"><div style="display:flex;align-items:center;gap:10px"><div class="grow" style="flex:1"><b>Trolley #14</b><small>Harbor Grand · recognized</small></div><span class="pill live">scanned</span></div></div>
+            <div class="card"><div style="display:flex;align-items:center;gap:10px"><div style="flex:1"><b>Cycle C-2026-0512</b><small>opened · 1 of 8 trolleys</small></div><span class="pill info">open</span></div></div>
+            <span class="btn primary" aria-hidden="true">Scan next trolley</span>
+          </div>
+        </div></div></div>
+        <div class="phone"><div class="scr"><div class="app">
+          <div class="status"><span>6:41 AM</span><span>●●● ▲ ▮</span></div>
+          <div class="head"><span class="back">‹</span><div><b>Clean delivery</b><small>Harbor Grand · Aug 6</small></div></div>
+          <div class="body">
+            <div class="steps"><span class="on" data-l="Scan"></span><span class="on" data-l="Photo"></span><span class="on" data-l="Sign"></span><span data-l="Done"></span></div>
+            <div class="card">
+              <div class="check"><i>✓</i><div class="grow">8 trolleys scanned<small>#14 – #21 · photo taken 6:39 AM</small></div></div>
+              <div class="check"><i>✓</i><div class="grow">Cycle C-2026-0512 delivered<small>previous dirty cycle closed</small></div></div>
+              <div class="check"><i>+</i><div class="grow">New cycle C-2026-0518 opened<small>from the same scan</small></div></div>
+            </div>
+            <div class="card"><small style="margin-bottom:4px">SIGNATURE · J. Carter</small>
+              <div class="sigpad"><svg viewBox="0 0 70 22" style="width:120px;height:34px" aria-hidden="true"><path d="M3 15c6-10 10-9 12-3s4 6 9-2 8-8 12 0 6 8 10 2 8-9 12-2 6 7 9 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            </div>
+            <span class="btn primary" aria-hidden="true">Complete delivery</span>
+          </div>
+        </div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 PLANT HUB -->
+<section id="plant">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">03 · HUB d'usine</div>
+      <h2>Voyez votre usine en kilos par heure.</h2>
+      <p class="lede">Le HUB interne affiche chaque équipe en direct : kilos produits, heures enregistrées, mix produits et coût complet de la main-d'œuvre par kilo, mis à jour chaque minute. Les quantités sont saisies sur une tablette au poste de conditionnement, et la feuille de présence est numérique.</p>
+    </div>
+
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>hub.yourlaundry.com/production</span></div><div class="hub" role="img" aria-label="Plant HUB real-time log: morning shift live, 869.5 kg produced, fully loaded labour cost €0.90 per kg">
+      <div class="htabs"><span class="on">Real-time log</span><span>Period view</span><span>Handover records</span></div>
+      <div class="hstat"><span class="pill live">Active shift: Morning · started 04:54</span><span>Updated <b>11:47</b> · refreshes every minute</span></div>
+      <div class="shifts">
+        <div class="shift live">
+          <div class="sh-head"><span class="sb am">AM</span><b>Morning shift</b><span class="pill live">Live · started 04:54</span></div>
+          <div class="lbl" style="margin-top:14px">Fully loaded labour cost</div>
+          <small class="formula">loaded hourly rate × registered hours ÷ kg produced</small>
+          <div class="big">€0.90 <small>/ kg</small></div>
+          <div class="sh-stats">
+            <div><div class="lbl">Produced</div><div class="mid">869.5 kg</div><small>rental stock 869.5 kg · customer-owned 0.0 kg</small></div>
+            <div><div class="lbl">Registered hours</div><div class="mid">34 h 48 m</div><small>6 people · €783 labour</small></div>
+          </div>
+          <div class="lbl" style="margin-top:16px">Product mix</div>
+          <div class="mixbar" aria-hidden="true"><i style="width:47.7%;background:#62a5c0"></i><i style="width:18.1%;background:#62a5c0"></i><i style="width:11.1%;background:#b8761f"></i><i style="width:8.2%;background:#7a6fc4"></i><i style="width:7.9%;background:#3f9e6a"></i><i style="width:7.1%;background:#b4472c"></i></div>
+          <div class="legend"><div class="lg"><i style="background:#62a5c0"></i><div><b>Sheet 240×240</b><small><b>48%</b> · 414.7 kg · 600 pcs</small></div></div><div class="lg"><i style="background:#62a5c0"></i><div><b>Pillowcase 50×60</b><small><b>18%</b> · 157.1 kg · 1,940 pcs</small></div></div><div class="lg"><i style="background:#b8761f"></i><div><b>Pillowcase 65×65</b><small><b>11%</b> · 96.1 kg · 850 pcs</small></div></div><div class="lg"><i style="background:#7a6fc4"></i><div><b>Sheet 150×240</b><small><b>8%</b> · 71.3 kg · 165 pcs</small></div></div><div class="lg"><i style="background:#3f9e6a"></i><div><b>Pillowcase 70×90</b><small><b>8%</b> · 68.8 kg · 420 pcs</small></div></div><div class="lg"><i style="background:#b4472c"></i><div><b>Pillowcase 50×70</b><small><b>7%</b> · 61.4 kg · 660 pcs</small></div></div></div>
+        </div>
+        <div class="shift">
+          <div class="sh-head"><span class="sb pm">PM</span><b>Afternoon shift</b><span class="pill">Not started</span></div>
+          <div class="empty"><b>No data yet</b><span>The afternoon shift starts once the morning shift hands over the textile. Until then this panel stays empty.</span></div>
+        </div>
+      </div>
+      <div class="loghead"><b>Log · Oct 16, 2026 · newest first</b><span class="search">Search product, operator, client…</span></div>
+      <div class="tscroll"><table class="t">
+        <thead><tr><th>Time</th><th>Shift</th><th>Client</th><th>Product</th><th class="n">Pcs</th><th class="n">Kg</th><th>Recorded by</th></tr></thead>
+        <tr><td class="mono"><b>11:46</b></td><td><span class="sb am">AM</span></td><td><span class="client">Riverside Design Hotel</span></td><td><b>Sheet 150×240</b></td><td class="n mono ok">+3</td><td class="n mono ok">+1.3</td><td class="muted">dbrooks</td></tr><tr><td class="mono"><b>11:46</b></td><td><span class="sb am">AM</span></td><td><span class="client">Riverside Design Hotel</span></td><td><b>Sheet 150×240</b></td><td class="n mono ok">+15</td><td class="n mono ok">+6.5</td><td class="muted">dbrooks</td></tr><tr><td class="mono"><b>11:45</b></td><td><span class="sb am">AM</span></td><td><span class="client">Riverside Design Hotel</span></td><td><b>Sheet 150×240</b></td><td class="n mono ok">+20</td><td class="n mono ok">+8.6</td><td class="muted">dbrooks</td></tr><tr><td class="mono"><b>11:44</b></td><td><span class="sb am">AM</span></td><td><span class="client">The Harbor Grand Hotel</span></td><td><b>Sheet 240×240</b></td><td class="n mono ok">+10</td><td class="n mono ok">+6.9</td><td class="muted">emartinez</td></tr><tr><td class="mono"><b>11:44</b></td><td><span class="sb am">AM</span></td><td><span class="client">The Harbor Grand Hotel</span></td><td><b>Sheet 240×240</b></td><td class="n mono ok">+20</td><td class="n mono ok">+13.8</td><td class="muted">emartinez</td></tr><tr><td class="mono"><b>11:43</b></td><td><span class="sb am">AM</span></td><td><span class="client">Maple Street Boutique</span></td><td><b>Pillowcase 50×60</b></td><td class="n mono ok">+40</td><td class="n mono ok">+3.2</td><td class="muted">snguyen</td></tr><tr><td class="mono"><b>11:42</b></td><td><span class="sb am">AM</span></td><td><span class="client">Maple Street Boutique</span></td><td><b>Pillowcase 65×65</b></td><td class="n mono ok">+30</td><td class="n mono ok">+3.4</td><td class="muted">snguyen</td></tr><tr><td class="mono"><b>11:41</b></td><td><span class="sb am">AM</span></td><td><span class="client">The Harbor Grand Hotel</span></td><td><b>Sheet 240×240</b></td><td class="n mono ok">+20</td><td class="n mono ok">+13.8</td><td class="muted">emartinez</td></tr>
+      </table></div>
+    </div></div>
+    <p class="fig">Journal en temps réel · chaque saisie horodatée, avec l'équipe et l'opérateur. Chaque saisie est rattachée au client concerné, si bien que le relevé de fin de mois se construit tout seul</p>
+
+    <div class="feat" style="margin-top:64px;align-items:start">
+      <div class="copy">
+        <div class="stepnum">TABLETTE AU POSTE DE CONDITIONNEMENT</div>
+        <h3>Savoir ce que produit l'usine, pendant qu'elle le produit.</h3>
+        <ul>
+          <li><b>Saisissez une seule fois le poids de chaque type de textile.</b> Ensuite, le système indique exactement combien de kilos l'usine produit en ce moment</li>
+          <li><b>Quantités saisies sur tablette</b>, bon de livraison numérique, fini la paperasse</li>
+          <li><b>Production comparée aux heures de l'équipe</b>, pour suivre facilement la productivité</li>
+          <li><b>Primes</b> pour les chefs d'équipe et les opérateurs, saine émulation interne : les chiffres sont sous les yeux de tous</li>
+        </ul>
+        <div class="callout"><b>Dans notre propre usine :</b> dès que la production horaire a été enregistrée et rendue visible à l'équipe, <b>le coût de main-d'œuvre par kilo a baissé d'environ 12 %</b> dans les premiers mois, avant tout autre changement.</div>
+      </div>
+      <div>
+        <div class="tablet"><div class="scr">
+          <div class="ui-head" style="margin:-14px -14px 12px;border-radius:0">Packing 2 · E. Martinez <span class="pill live">Morning shift</span><span class="right">C-2026-0512</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="ui" style="box-shadow:none;padding:12px"><small class="mono" style="color:var(--muted-2);font-size:11px">ITEM</small><div style="font-weight:600;margin-top:4px">Sheet 240×240</div><small style="color:var(--muted-2)">0.69 kg / pc · saved</small></div>
+            <div class="ui" style="box-shadow:none;padding:12px"><small class="mono" style="color:var(--muted-2);font-size:11px">QUANTITY</small><div style="font-family:var(--font-display);font-size:30px;font-weight:600;line-height:1.1;margin-top:2px">20 <span style="font-size:14px;color:var(--muted-2)">pcs</span></div><small style="color:var(--muted-2)">= 13.8 kg</small></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px" aria-hidden="true">
+            <span class="btn ghost" style="padding:10px">+10</span><span class="btn ghost" style="padding:10px">+50</span><span class="btn" style="padding:10px">Save</span>
+          </div>
+          <div class="ui-row" style="padding:10px 0 0;border:0"><div class="grow"><small>Digital delivery note</small>DN-2026-08-0512</div><span class="pill ok">generated</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="feat rev" style="margin-top:64px;align-items:start">
+      <div class="copy">
+        <div class="stepnum">FEUILLE DE PRÉSENCE NUMÉRIQUE</div>
+        <h3>Signature sur tablette, efficacité en chiffres.</h3>
+        <ul>
+          <li><b>Feuille de présence mensuelle par salarié</b>, chaque pointage signé sur la tablette, archivée en PDF</li>
+          <li><b>Un journal du travail effectué</b> par opérateur, consultable à tout moment</li>
+          <li>Quand votre personnel utilise la feuille numérique, <b>l'efficacité des équipes devient mesurable</b> : kilos produits par heure travaillée</li>
+          <li>Coût de main-d'œuvre par kilo, par jour, par équipe</li>
+        </ul>
+        <a class="btn" href="#demo" style="margin-top:22px">Voir avec vos propres chiffres</a>
+      </div>
+      <div class="paper att">
+        <span class="stamp">PDF · SIGNED</span>
+        <h4>NEATLY HUB · ATTENDANCE SHEET</h4>
+        <div class="sub">Employee: Emily Martinez · Month: October 2026</div>
+        <p class="att-note">Daily break and the 8-hour daily limit are calculated from all of the day's work sessions.</p>
+        <div class="tscroll"><table class="t">
+          <thead><tr><th>Date</th><th>Clock in</th><th>Clock out</th><th>On site</th><th>Break</th><th>Official</th><th class="n">#</th><th>Signature</th></tr></thead>
+          <tr><td class="mono">Oct 02</td><td class="mono">17:40:45</td><td class="mono">02:25:45</td><td class="mono">8:45:00</td><td class="mono">0:45:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(2px,-1.4px) rotate(-1.7deg) scale(0.99)">Emily</span></td></tr>
+<tr><td class="mono">Oct 03</td><td class="mono">17:37:19</td><td class="mono">02:07:19</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(1px,-1.3px) rotate(1.7deg) scale(0.98)">Emily</span></td></tr>
+<tr><td class="mono">Oct 04</td><td class="mono">17:59:11</td><td class="mono">02:29:11</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(0px,-0.2px) rotate(-0.4deg) scale(0.94)">Emily</span></td></tr>
+<tr><td class="mono">Oct 05</td><td class="mono">17:58:08</td><td class="mono">02:28:08</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(8px,1.0px) rotate(-2.3deg) scale(0.99)">Emily</span></td></tr>
+<tr><td class="mono">Oct 06</td><td class="mono">17:58:04</td><td class="mono">02:28:04</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(3px,0.2px) rotate(-3.1deg) scale(1.02)">Emily</span></td></tr>
+<tr><td class="mono">Oct 08</td><td class="mono">05:26:35</td><td class="mono">13:56:35</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(9px,1.4px) rotate(-3.6deg) scale(0.99)">Emily</span></td></tr>
+<tr><td class="mono">Oct 09</td><td class="mono">05:26:24</td><td class="mono">13:56:24</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(2px,-1.1px) rotate(-3.7deg) scale(0.97)">Emily</span></td></tr>
+<tr><td class="mono">Oct 10</td><td class="mono">05:26:32</td><td class="mono">13:56:32</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(4px,0.5px) rotate(-3.2deg) scale(1.01)">Emily</span></td></tr>
+<tr><td class="mono">Oct 11</td><td class="mono">05:26:21</td><td class="mono">13:56:21</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(9px,-0.4px) rotate(-3.3deg) scale(1.02)">Emily</span></td></tr>
+<tr><td class="mono">Oct 12</td><td class="mono">05:27:33</td><td class="mono">13:57:33</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(1px,0.4px) rotate(-0.2deg) scale(1.01)">Emily</span></td></tr>
+<tr><td class="mono">Oct 15</td><td class="mono">13:25:44</td><td class="mono">21:55:44</td><td class="mono">8:30:00</td><td class="mono">0:30:00</td><td class="mono">8:00:00</td><td class="n mono">1</td><td class="sigcell"><span class="hand" style="transform:translate(8px,-0.6px) rotate(-0.5deg) scale(0.99)">Emily</span></td></tr>
+</table></div>
+        <div class="att-sum"><div>Monthly required hours: <b>168:00:00</b> · Leave: <b>0:00:00</b></div><div>Official hours worked: <b>88:00:00</b></div></div>
+        <div class="att-sign"><div><span class="hand big-hand" style="transform:rotate(-3deg)">J. Carter</span><i></i>Plant manager signature</div><div><span class="hand big-hand" style="transform:rotate(-2deg)">Emily Martinez</span><i></i>Employee monthly signature</div></div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<!-- ════════════════ AIRBNB PAGE ════════════════ -->
+<main id="page-airbnb" class="page">
+
+<div class="hero tint">
+  <div class="wrap grid">
+    <div>
+      <div class="eyebrow">Pour les blanchisseries qui servent aussi la location courte durée</div>
+      <h1>Hôtels, location de linge et des centaines d'appartements par jour. Un seul système.</h1>
+      <p class="lede">Servir des appartements Airbnb en plus des hôtels multiplie la logistique : des centaines d'adresses, des créneaux liés aux arrivées, des boîtes à clés, des équipes de ménage. À Budapest, nous livrons près de 2 000 appartements chaque jour, et c'est avec ce système que nous le faisons.</p>
+      <div class="actions"><a class="btn" href="#demo">Réserver une démo de 30 minutes</a> <a class="btn ghost" href="mailto:mate.kiraly@neatly.eu?subject=Neatly%20Laundry%20OS%20%E2%80%93%20apartment%20laundry">Écrivez-nous</a></div>
+    </div>
+    <div class="phone"><div class="scr"><div class="app">
+      <div class="status"><span>8:52 AM</span><span>●●● ▲ ▮</span></div>
+      <div class="head"><span class="back">‹</span><div><b>Today's route</b><small>14 stops · 3 done · 1 late</small></div><span class="pill live" style="margin-left:auto">live</span></div>
+      <div class="body">
+        <div class="route">
+          <div class="done"><span class="t">8:10</span><span>412 Pine St 2B</span><span class="pill ok">done</span></div>
+          <div class="done"><span class="t">8:35</span><span>88 Oak Ave 1</span><span class="pill ok">done</span></div>
+          <div class="done"><span class="t">8:50</span><span>31 Elm St 1A</span><span class="pill ok">done</span></div>
+          <div class="late"><span class="t">9:20</span><span>147 Main St 3C</span><span class="pill warn">+12 min</span></div>
+          <div><span class="t">9:45</span><span>5 Harbor Rd 2</span><span class="pill">next</span></div>
+          <div><span class="t">10:05</span><span>220 Maple Ave 4D</span><span class="pill">—</span></div>
+        </div>
+        <div class="msg">Runner: the cleaner is at 147 Main St from 11, please go there first.</div>
+        <div class="msg me">On it.</div>
+        <span class="btn primary" aria-hidden="true">Navigate to next stop</span>
+      </div>
+    </div></div></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">La base, incluse dans chaque offre</div>
+      <h2>Un logiciel conçu pour nous-mêmes, utilisé chaque jour et sans cesse amélioré.</h2>
+      <p class="lede">L'offre appartements repose sur le même système que l'offre hôtels : piloter l'usine, laver pour les hôtels, proposer votre propre location de linge et servir les appartements, le tout au même endroit. Tout ce que reçoivent les blanchisseries d'hôtel est inclus.</p>
+    </div>
+    <div class="slices">
+      <div class="slice"><div class="k">01 · Portail client</div><h4>Portail hôtel et suivi des cycles</h4><p>Chaque enlèvement et chaque cycle sont traçables ; facture automatique, relevé PDF, CSV, e-mail.</p></div>
+      <div class="slice"><div class="k">02 · QR code</div><h4>Appli livreur, cycles qui démarrent au chariot</h4><p>Le livreur scanne, le cycle s'ouvre ; la livraison du propre le met à jour et clôture le précédent.</p></div>
+      <div class="slice"><div class="k">03 · HUB d'usine</div><h4>Deux équipes, kg en temps réel, journal</h4><p>Feuille de présence numérique avec signature, productivité par heure travaillée, tablette au poste de conditionnement.</p></div>
+      <div class="slice"><div class="k">04 · Facturation</div><h4>Facturation et relevés automatiques</h4><p>Relevé PDF de fin de mois par client, CSV pour la comptabilité, e-mail envoyé automatiquement.</p></div>
+    </div>
+    <p class="fig" style="margin-top:14px"><a href="#hotels" style="color:var(--blue-ink)">Détails sur la page des blanchisseries d'hôtel →</a></p>
+  </div>
+</section>
+
+<!-- A1 AIRBNB CLIENT PORTAL -->
+<section class="band" id="airbnb-portal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">En plus · 01</div>
+      <h2>Un portail client pour les gestionnaires Airbnb, connecté à Guesty.</h2>
+      <p class="lede">Commandes préremplies à partir des réservations, produits complémentaires, relevés, statistiques et statuts en direct. Les plus grands gestionnaires suivent ainsi plusieurs centaines d'arrivées par jour.</p>
+    </div>
+    <div class="feat" style="align-items:start">
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><span>portal.yourlaundry.com/orders · today (Oct 16, 2026)</span></div>
+        <div class="ui" style="border:0;border-radius:0;box-shadow:none">
+          <div class="ui-head">Active orders · today <span class="pill info">Guesty · 143 check-ins loaded</span><span class="right">updated 09:12</span></div>
+          <div class="ui-row"><div class="grow">412 Pine St, Apt 2B<small>check-in 15:00 · 2 guests · 1 double bed + 1 sofa bed</small></div><span class="mono">4 packs</span><span class="pill ok">delivered 08:10</span></div>
+          <div class="ui-row"><div class="grow">147 Main St, Apt 3C<small>check-in 14:00 · 4 guests · 2 bedrooms</small></div><span class="mono">6 packs</span><span class="pill warn">courier en route · +12 min</span></div>
+          <div class="ui-row"><div class="grow">5 Harbor Rd, Apt 2<small>check-in 16:00 · 2 guests · + welcome pack</small></div><span class="mono">3 + products</span><span class="pill">courier en route</span></div>
+          <div class="ui-row"><div class="grow">220 Maple Ave, Apt 4D<small>check-in 18:00 · 3 guests</small></div><span class="mono">5 packs</span><span class="pill">scheduled</span></div>
+          <div class="ui-row" style="background:var(--mist)"><div class="grow"><b>Inactive apartments</b><small>no order for 14 days · 3 apartments</small></div><span class="pill warn">check</span></div>
+        </div>
+      </div>
+      <div class="copy">
+        <h3>Le client voit la livraison du livreur en temps réel.</h3>
+        <ul>
+          <li><b>Intégration Guesty :</b> les arrivées de demain deviennent automatiquement des commandes, préremplies à partir du modèle de l'appartement</li>
+          <li><b>Statuts en direct :</b> planifié, livreur en route, livré, avec photo</li>
+          <li><b>Produits complémentaires</b> commandés avec le linge : kits d'accueil, café, produits de toilette</li>
+          <li><b>Relevés et statistiques</b> par appartement, par mois, exportables</li>
+          <li>Plusieurs centaines d'arrivées par jour restent lisibles : filtres par appartement, destinataire ou créneau</li>
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- A2 COURIER APP + A3 RUNNER -->
+<section id="runner">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">En plus · 02 et 03</div>
+      <h2>Une appli pour les livreurs, une console Runner pour le responsable des livraisons.</h2>
+      <p class="lede">Les livreurs livrent les appartements depuis l'appli. Le Runner planifie automatiquement les tournées du lendemain, mesure les statistiques de livraison et les retards, et envoie des messages aux livreurs dans l'appli.</p>
+    </div>
+    <div class="feat" style="align-items:start">
+      <div class="ui">
+        <div class="ui-head">Runner · next-day route plan <span class="pill live">automatic</span><span class="right">hub.yourlaundry.com/runner · Oct 17, 2026</span></div>
+        <div class="tscroll"><table class="t">
+          <thead><tr><th>Courier</th><th class="n">Stops</th><th class="n">Packs</th><th>Window</th><th class="n">Plan km</th><th>Status</th></tr></thead>
+          <tr><td>M. Johnson</td><td class="n">32</td><td class="n">118</td><td class="mono">08:00–12:00</td><td class="n mono">31.4</td><td><span class="pill ok">assigned</span></td></tr>
+          <tr><td>R. Patel</td><td class="n">31</td><td class="n">112</td><td class="mono">08:00–13:00</td><td class="n mono">29.8</td><td><span class="pill ok">assigned</span></td></tr>
+          <tr><td>C. Williams</td><td class="n">27</td><td class="n">96</td><td class="mono">09:00–12:00</td><td class="n mono">24.1</td><td><span class="pill ok">assigned</span></td></tr>
+          <tr><td>A. Garcia</td><td class="n">30</td><td class="n">109</td><td class="mono">08:00–13:00</td><td class="n mono">30.6</td><td><span class="pill warn">overloaded</span></td></tr>
+          <tr><td>K. Lee</td><td class="n">23</td><td class="n">77</td><td class="mono">10:00–13:00</td><td class="n mono">22.8</td><td><span class="pill">spare capacity</span></td></tr>
+          <tr><td><b>Total</b></td><td class="n"><b>143</b></td><td class="n"><b>512</b></td><td></td><td class="n mono"><b>138.7</b></td><td></td></tr>
+        </table></div>
+        <div class="ui-row" style="background:var(--mist)"><div class="grow"><b>Today's delivery statistics</b><small>138 stops · 96% inside the window · average delay 4 min · 5 late</small></div><span class="pill ok">96%</span></div>
+      </div>
+      <div class="copy">
+        <h3>Appli livreur</h3>
+        <ul>
+          <li>Tournée du jour sous forme de liste d'arrêts ordonnée, avec navigation</li>
+          <li>Livraison avec photo, code de la boîte à clés et notes</li>
+          <li>Enlèvement du linge sale enregistré depuis le même écran</li>
+        </ul>
+        <h3 style="margin-top:26px">Console Runner</h3>
+        <ul>
+          <li><b>Planification automatique des tournées du lendemain</b> à partir des arrivées chargées depuis Guesty</li>
+          <li><b>Statistiques de livraison</b> par livreur : arrêts, colis, respect des créneaux, retards</li>
+          <li><b>Messages dans l'appli</b> aux livreurs, liés à une adresse</li>
+        </ul>
+        <a class="btn" href="#demo" style="margin-top:22px">Réserver une démo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- A4 COURIER PAY -->
+<section class="band" id="courier-pay">
+  <div class="wrap">
+    <div class="feat rev" style="align-items:start">
+      <div class="copy">
+        <div class="eyebrow">En plus · 04</div>
+        <h2>Rémunération des livreurs, par adresse.</h2>
+        <p class="lede" style="margin-top:12px">Le système calcule la rémunération de chaque livreur par adresse et vous fournit des relevés téléchargeables pour le règlement. Les statistiques de performance par livreur restent consultables. Pas de discussions.</p>
+        <ul>
+          <li><b>Rémunération par adresse</b>, par zone ou par nombre de colis, vous fixez les règles</li>
+          <li><b>Relevé mensuel téléchargeable</b> par livreur, en PDF et CSV</li>
+          <li><b>Statistiques de performance :</b> arrêts, respect des créneaux, retards, retours clients</li>
+        </ul>
+        <a class="btn" href="#demo" style="margin-top:22px">Réserver une démo</a>
+      </div>
+      <div class="ui">
+        <div class="ui-head">Courier settlement · September 2026 <span class="right">statement · PDF · CSV</span></div>
+        <div class="tscroll"><table class="t">
+          <thead><tr><th>Courier</th><th class="n">Stops</th><th class="n">On time</th><th class="n">Late</th><th class="n">Pay</th></tr></thead>
+          <tr><td>M. Johnson</td><td class="n mono">312</td><td class="n mono">98%</td><td class="n mono">6</td><td class="n mono">€998</td></tr>
+          <tr><td>R. Patel</td><td class="n mono">341</td><td class="n mono">97%</td><td class="n mono">11</td><td class="n mono">€1,091</td></tr>
+          <tr><td>C. Williams</td><td class="n mono">268</td><td class="n mono">99%</td><td class="n mono">3</td><td class="n mono">€858</td></tr>
+          <tr><td>A. Garcia</td><td class="n mono">329</td><td class="n mono">94%</td><td class="n mono">19</td><td class="n mono">€1,053</td></tr>
+          <tr><td><b>Total</b></td><td class="n mono"><b>1,250</b></td><td class="n mono"><b>97%</b></td><td class="n mono"><b>39</b></td><td class="n mono"><b>€4,000</b></td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ════════════════ PRICING (shared) ════════════════ -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Tarifs</div>
+      <h2>À l'usage. Pas de licence, pas de prix par utilisateur.</h2>
+      <p class="lede">Vous payez pour les kilos que vous traitez. Quand votre blanchisserie grandit, la redevance grandit. Un mois calme, elle baisse.</p>
+    </div>
+    <div class="plans">
+      <div class="plan" data-plan="hotels">
+        <div class="name">Pour les blanchisseries d'hôtel</div>
+        <h3>Portail client · Appli livreur avec QR · HUB d'usine</h3>
+        <div class="price">
+          <div><b>0,015 €</b><span>/ kg de textile traité</span></div>
+        </div>
+        <ul>
+          <li>Clients hôteliers et accès au portail illimités</li>
+          <li>Appli livreur, étiquettes QR, suivi des cycles</li>
+          <li>HUB d'usine, journal de production, feuille de présence numérique</li>
+          <li>Facturation automatique, relevé PDF, CSV, e-mail</li>
+        </ul>
+        <a class="btn" href="#demo">Réserver une démo</a>
+      </div>
+      <div class="plan hi" data-plan="airbnb">
+        <div class="name">Pour les blanchisseries qui servent aussi des appartements</div>
+        <h3>Toutes les fonctions hôtel + logistique appartements</h3>
+        <div class="price">
+          <div><b>0,03 €</b><span>/ kg de textile traité</span></div>
+        </div>
+        <ul>
+          <li>Tout ce qui est dans l'offre hôtels</li>
+          <li>Portail client pour gestionnaires Airbnb, intégration Guesty</li>
+          <li>Appli livreur pour la livraison en appartement</li>
+          <li>Console Runner, tournées automatiques du lendemain, messages dans l'appli</li>
+          <li>Rémunération des livreurs par adresse, relevés, statistiques de performance</li>
+        </ul>
+        <a class="btn" href="#demo">Réserver une démo</a>
+      </div>
+    </div>
+    <div class="calc" id="calc">
+      <div class="calc-head"><div><div class="name">Estimez votre redevance mensuelle</div><h3>Combien de kilos votre usine traite-t-elle par mois ?</h3></div><small>Offre blanchisseries d'hôtel · 0,015 € / kg</small></div>
+      <label for="kg-range" class="sr-only">Volume mensuel en kilos</label>
+      <input id="kg-range" type="range" min="0" max="150000" step="1000" value="40000" aria-describedby="kg-out">
+      <div class="calc-scale" aria-hidden="true"><span>0 kg</span><span>50 000</span><span>100 000</span><span>150 000 kg</span></div>
+      <div class="calc-out" id="kg-out" aria-live="polite">
+        <div><span class="lbl">Volume mensuel</span><b id="kg-val">40 000 kg</b></div>
+        <div class="eq">×</div>
+        <div><span class="lbl">Tarif</span><b>0,015 € / kg</b></div>
+        <div class="eq">=</div>
+        <div class="fee"><span class="lbl">Redevance mensuelle approx.</span><b id="fee-val">600 €</b></div>
+      </div>
+      <a class="btn" href="#demo" style="margin-top:18px">Demander un devis précis</a>
+    </div>
+    <p class="fineprint">Tarifs HT, en EUR, facturés mensuellement sur les kilos enregistrés dans le système à la réception en usine. Sans durée minimale, sans redevance minimale. La mise en place et la formation font l'objet d'un devis séparé. Le <a href="#products" style="color:var(--blue-ink)">module produits</a> est optionnel et facturé sur les ventes.</p>
+  </div>
+</section>
+
+<!-- OPTIONAL MODULE: PRODUCTS -->
+<section class="band" id="products">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Module optionnel</div>
+      <h2>La camionnette y va déjà. Vendez des produits dans la même tournée.</h2>
+      <p class="lede">Nous allons de toute façon chaque jour dans les hôtels et les appartements, alors nous vendons des consommables avec la même livraison : papier toilette, gel douche et shampoing, capsules de café. Nos clients bénéficient pour leurs achats de la même rapidité et de la même précision que pour leur linge, et nous d'une deuxième source de revenus sans deuxième camionnette.</p>
+    </div>
+    <div class="feat" style="align-items:start">
+      <div class="ui">
+        <div class="ui-head">Shop · client portal <span class="right">The Harbor Grand Hotel</span></div>
+        <div class="ui-row"><div class="grow">Guest shampoo 30 ml<small>carton · 200 pcs · in stock</small></div><span class="mono">€32.00</span><span class="btn sm" aria-hidden="true">Order</span></div>
+        <div class="ui-row"><div class="grow">Shower gel 30 ml<small>carton · 200 pcs · in stock</small></div><span class="mono">€32.00</span><span class="btn sm" aria-hidden="true">Order</span></div>
+        <div class="ui-row"><div class="grow">Toilet paper 3-ply<small>bag · 64 rolls · in stock</small></div><span class="mono">€20.00</span><span class="btn sm" aria-hidden="true">Order</span></div>
+        <div class="ui-row"><div class="grow">Coffee capsules<small>box · 100 pcs · 12 left</small></div><span class="mono">€40.00</span><span class="btn sm" aria-hidden="true">Order</span></div>
+        <div class="ui-row" style="background:var(--mist)"><div class="grow"><b>Arrives with the next linen delivery</b><small>Aug 6 · morning round · no extra freight</small></div><span class="pill ok">scheduled</span></div>
+      </div>
+      <div class="copy">
+        <h3>Ajouté au système comme module, quand vous le souhaitez.</h3>
+        <p style="margin-top:10px;color:var(--muted)">L'entrée en stock, la réception des marchandises, l'inventaire et l'écran de commande des produits complémentaires côté client s'activent comme un seul module optionnel.</p>
+        <ul>
+          <li><b>Entrée en stock</b> à partir de la facture fournisseur, avec référence et prix d'achat</li>
+          <li><b>Réception et inventaire</b> sur tablette, écarts visibles immédiatement</li>
+          <li><b>Écran d'entrepôt pour le conditionnement :</b> les produits commandés vont dans le chariot à côté du linge et sur le bon de livraison</li>
+          <li><b>Écran de commande pour les clients</b> dans le portail ; le chiffre d'affaires produits apparaît sur le relevé de fin de mois et sur la facture</li>
+        </ul>
+        <div class="callout"><b>Redevance du module : 0,15 % des ventes.</b> Basée sur le chiffre d'affaires, vous ne payez donc que lorsque le module vous rapporte.</div>
+        <a class="btn" href="#demo" style="margin-top:22px">Se renseigner sur le module</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta tint" id="demo">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Parlons-en</div>
+      <h2>Nous savons à quel point le changement est difficile. Nous l'avons fait nous-mêmes.</h2>
+      <p class="lede" style="margin-top:14px">Nous étions une blanchisserie bien avant d'écrire du logiciel, et nous le sommes toujours. Nous savons donc combien d'aide il faut pour moderniser des processus qui tournent de la même façon depuis des années. Aujourd'hui, nous savons aussi que construire ce système a été la meilleure décision de notre histoire.</p>
+      <p class="lede" style="margin-top:14px">Commencez par un appel en visio et nous répondrons à vos questions. Nous ne vous imposerons pas un déploiement compliqué en plus du travail quotidien. Si vous décidez d'avancer, nous venons chez vous et faisons la transition ensemble, sur place, 10 à 12 heures par jour :</p>
+      <ul class="cta-list">
+        <li>Nous partons en tournée avec vos livreurs et leur montrons l'appli</li>
+        <li>Nous conditionnons dans votre usine et faisons les équipes avec votre personnel</li>
+        <li>Nous déployons le logiciel avec vos clients clés</li>
+        <li>Vous apprenez chaque écran au fur et à mesure</li>
+      </ul>
+      <p class="lede" style="margin-top:16px">À la fin, vous avez une usine moderne clés en main et beaucoup plus de temps libre. Vos clients ont un prestataire, et un logiciel, qu'ils n'échangeraient pour rien au monde. Croyez-nous, nous le savons.</p>
+    </div>
+    <form class="form" id="demo-form">
+      <div class="form-row">
+        <div><label for="f-name">Votre nom</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Anne Martin" required></div>
+        <div><label for="f-company">Blanchisserie / entreprise</label>
+        <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Blanchisserie Martin SARL" required></div>
+      </div>
+      <label for="f-mail">E-mail professionnel</label>
+      <input id="f-mail" name="email" type="email" autocomplete="email" placeholder="anne@blanchisserie-martin.fr" required>
+      <label for="f-kg">Volume quotidien traité (kg, environ)</label>
+      <input id="f-kg" name="daily_kg" type="number" inputmode="numeric" min="0" step="1" placeholder="8000">
+      <div class="hp" aria-hidden="true"><label for="f-website">Site web</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <button class="btn" type="submit" id="demo-submit">Nous contacter</button>
+      <p id="demo-ok" hidden role="status" style="margin-top:12px;color:var(--ok-fg);font-size:14px">Merci, nous avons bien reçu votre demande. Nous revenons vers vous sous un jour ouvré avec une proposition de créneau.</p>
+      <p id="demo-err" hidden role="alert" style="margin-top:12px;color:var(--warn-fg);font-size:14px">Désolés, le formulaire n'a pas pu être envoyé. Écrivez-nous directement à <a href="mailto:mate.kiraly@neatly.eu" style="color:inherit">mate.kiraly@neatly.eu</a>.</p>
+      <p style="margin-top:12px;font-size:12.5px;color:var(--muted-2)">Nous utilisons vos coordonnées uniquement pour répondre à votre demande. Voir notre <a href="/privacy.html" style="color:inherit">politique de confidentialité</a> (en anglais).</p>
+      <p style="margin-top:6px;font-size:13px;color:var(--muted-2)">ou écrivez-nous : <a class="mono" href="mailto:mate.kiraly@neatly.eu" style="color:var(--fg)">mate.kiraly@neatly.eu</a></p>
+    </form>
+  </div>
+</section>
+
+<!-- MY STORY -->
+<section class="story" id="story">
+  <div class="wrap">
+    <aside class="founder">
+      <img class="avatar" src="data:image/jpeg;base64,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" alt="Máté Király" width="96" height="96">
+      <b>Máté Király</b>
+      <span>Fondateur · Neatly &amp; Neatly Laundry OS</span>
+      <span>Budapest, Hongrie</span>
+      <a class="btn ghost sm" href="https://www.linkedin.com/in/kir%C3%A1ly-m%C3%A1t%C3%A9-829ab0ba/" target="_blank" rel="noopener">Me retrouver sur LinkedIn</a>
+    </aside>
+    <div class="story-body">
+      <div class="eyebrow">Mon histoire</div>
+      <h2>J'ai d'abord construit une blanchisserie. Le logiciel en est né.</h2>
+      <p>Je suis Máté Király, entrepreneur de 33 ans basé à Budapest. J'ai étudié l'économie et lancé ma première entreprise alors que j'étais encore étudiant. Je la dirige toujours : <b>Neatly</b>, un service de location de linge conçu pour les appartements en location courte durée.</p>
+      <p>Chaque jour, nous fournissons du linge propre à environ 2 000 appartements à Budapest, nous effectuons près de 100 000 livraisons par an et notre chiffre d'affaires annuel dépasse 1,5 million d'euros. Depuis peu, nous travaillons aussi pour des hôtels. Nous devons cette croissance, et notre position de leader sur le marché de la location courte durée, à une habitude : nous n'avons jamais cessé d'améliorer notre façon de travailler.</p>
+      <p>Avec notre propre usine de blanchisserie, une flotte de 17 véhicules et près de 50 personnes, nous ne sommes pas seulement une blanchisserie. En chemin, nous sommes aussi devenus un éditeur de logiciels.</p>
+      <div class="story-stats">
+        <div><b>~2 000</b><span>appartements par jour</span></div>
+        <div><b>~100 000</b><span>livraisons par an</span></div>
+        <div><b>1,5 M€+</b><span>de chiffre d'affaires annuel</span></div>
+        <div><b>17</b><span>véhicules dans la flotte</span></div>
+        <div><b>~50</b><span>personnes dans l'équipe</span></div>
+      </div>
+      <blockquote>L'un est impossible sans l'autre. Nous ne pouvons proposer un vrai logiciel à d'autres blanchisseries que parce que nous l'utilisons nous-mêmes chaque jour, l'améliorons sans cesse et sentons à quel point il facilite le travail. Neatly Laundry OS en est le résultat.</blockquote>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <svg viewBox="0 0 183.663 66.606" class="logo" role="img" aria-label="Neatly"><use href="#neatly-logo"/></svg>
+    <span>Neatly Laundry OS · Textiltech Kft. · Budapest, Hongrie</span>
+    <a href="mailto:mate.kiraly@neatly.eu" style="text-decoration:none;color:var(--blue-ink)">mate.kiraly@neatly.eu</a>
+    <span style="margin-left:auto">© 2026 Neatly Laundry OS · <a href="https://laundsoft.com" style="color:inherit">laundsoft.com</a> · <a href="/privacy.html" style="color:inherit">Confidentialité</a> · <button type="button" class="linkbtn" id="consent-open">Paramètres des cookies</button></span>
+  </div>
+</footer>
+
+<div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Consentement aux cookies" hidden>
+  <p>Nous utilisons des cookies pour mesurer la performance de nos annonces Google. Rien n'est enregistré tant que vous n'avez pas accepté. <a href="/privacy.html" style="color:var(--blue-ink)">Politique de confidentialité</a></p>
+  <div class="actions">
+    <button type="button" class="btn ghost" id="consent-reject">Refuser</button>
+    <button type="button" class="btn" id="consent-accept">Accepter</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // decorative, deterministic pseudo-QR
+  function qr(g, seed, size){
+    var n=21, s=(seed*2654435761)>>>0||1, out='';
+    function rnd(){ s^=s<<13; s>>>=0; s^=s>>>17; s^=s<<5; s>>>=0; return (s&0xffff)/0xffff; }
+    var fixed={}; [[0,0],[14,0],[0,14]].forEach(function(p){ for(var i=-1;i<8;i++)for(var j=-1;j<8;j++) fixed[(p[0]+i)+','+(p[1]+j)]=1; });
+    var c=size/n;
+    function cell(x,y){ out+='<rect x="'+(x*c).toFixed(2)+'" y="'+(y*c).toFixed(2)+'" width="'+(c*1.04).toFixed(2)+'" height="'+(c*1.04).toFixed(2)+'"/>'; }
+    [[0,0],[14,0],[0,14]].forEach(function(p){ for(var i=0;i<7;i++)for(var j=0;j<7;j++){ if((i===0||i===6||j===0||j===6)||(i>=2&&i<=4&&j>=2&&j<=4)) cell(p[0]+i,p[1]+j); } });
+    for(var x=0;x<n;x++)for(var y=0;y<n;y++){ if(fixed[x+','+y]) continue; if(rnd()<0.46) cell(x,y); }
+    g.innerHTML=out;
+  }
+  document.querySelectorAll('g.qr').forEach(function(g){ if(!g.getAttribute('fill')) g.setAttribute('fill','#1c2428'); qr(g, +g.dataset.seed||7, +g.dataset.size||44); });
+
+  // scale the portal mockups to their container (desktop); let them reflow on phones
+  function fit(){ document.querySelectorAll('.fit').forEach(function(f){ var inner=f.firstElementChild, w=+f.dataset.w||760;
+    if(window.innerWidth<700){ inner.style.width=''; inner.style.transform=''; f.style.height=''; return; }
+    var s=Math.min(1,f.clientWidth/w); inner.style.width=w+'px'; inner.style.transform='scale('+s+')'; f.style.height=Math.round(inner.offsetHeight*s)+'px'; }); }
+  window.addEventListener('resize',fit); fit(); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit);
+
+  // fee calculator
+  var kr=document.getElementById('kg-range');
+  if(kr){ var fmt=function(n){return n.toLocaleString('fr-FR');};
+    var upd=function(){ var kg=+kr.value; document.getElementById('kg-val').textContent=fmt(kg)+' kg';
+      document.getElementById('fee-val').textContent=fmt(Math.round(kg*0.015))+' €'; };
+    kr.addEventListener('input',upd); upd(); }
+
+  // demo form → Google Apps Script web app → Gmail (see laundsoft-form.gs in the vault)
+  // Google Ads conversion "Laundsoft - Demo request form" (account Neatly 466-183-0552): fires on every successful enquiry
+  var ADS_CONVERSION = 'AW-17071627520/_IRfCI_1gJ8dEIC6scw_';
+  function trackLead(page){ if(!window.gtag) return;
+    gtag('event','form_submit',{form_id:'demo-form', page:page||''});
+    if(ADS_CONVERSION) gtag('event','conversion',{send_to:ADS_CONVERSION}); }
+  var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwV7v95xXBua0yWjbLkRy3TTwh8SFLCmRKqKIxpygzYP-00mF0qGNaTCwQ7k49H9zs3iw/exec';
+  document.getElementById('demo-form').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target;
+    var ok=document.getElementById('demo-ok'), err=document.getElementById('demo-err'), btn=document.getElementById('demo-submit');
+    var data={name:f.name.value.trim(), company:f.company.value.trim(), email:f.email.value.trim(), daily_kg:f.daily_kg.value, website:f.website.value, page:'fr:'+((document.querySelector('.page.show')||{}).id||'')};
+    if(FORM_ENDPOINT.indexOf('PASTE_')>-1){ // not wired yet: fall back to the visitor's e-mail app
+      var body='Name: '+data.name+'\nLaundry / company: '+data.company+'\nE-mail: '+data.email+'\nDaily volume (kg): '+(data.daily_kg||'-')+'\n';
+      location.href='mailto:mate.kiraly@neatly.eu?subject='+encodeURIComponent('Neatly Laundry OS demo request - '+data.company)+'&body='+encodeURIComponent(body);
+      return; }
+    ok.hidden=true; err.hidden=true; btn.disabled=true; var label=btn.textContent; btn.textContent='Envoi en cours…';
+    fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+      .then(function(r){ return r.json(); })
+      .then(function(res){ if(res && res.ok){ ok.hidden=false; f.reset(); trackLead(data.page); } else { err.hidden=false; } })
+      .catch(function(){ err.hidden=false; })
+      .then(function(){ btn.disabled=false; btn.textContent=label; }); });
+
+  // two-page router on plain hashes
+  var pages={hotels:document.getElementById('page-hotels'), airbnb:document.getElementById('page-airbnb')};
+  function show(p){ Object.keys(pages).forEach(function(k){ pages[k].classList.toggle('show',k===p); });
+    document.querySelectorAll('a[data-page]').forEach(function(a){ a.classList.toggle('active',a.dataset.page===p); });
+    document.querySelectorAll('.plan').forEach(function(pl){ pl.classList.toggle('hi',pl.dataset.plan===p); }); }
+  function route(){ var h=(location.hash||'#hotels').slice(1);
+    if(pages[h]){ show(h); window.scrollTo(0,0); document.title=(h==='airbnb'?'Neatly Laundry OS · Blanchisseries d’appartements + hôtels':'Neatly Laundry OS · Blanchisseries d’hôtel'); return; }
+    var el=document.getElementById(h); if(!el) return;
+    var owner=el.closest('.page'); if(owner && !owner.classList.contains('show')) show(owner.id.replace('page-',''));
+    el.scrollIntoView({block:'start'}); }
+  window.addEventListener('hashchange',route); route();
+  // logo / active menu item: the hash does not change, so scroll back to the top ourselves
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var target=a.getAttribute('href').slice(1); if(!pages[target]) return;
+    var current=(location.hash||'#hotels').slice(1);
+    if(current===target){ e.preventDefault();
+      var smooth=!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+      window.scrollTo({top:0,behavior:smooth?'smooth':'auto'}); }
+  });
+
+  // sticky header height -> anchor jumps land below the header, not under it
+  (function(){ var nav=document.querySelector('.nav'); if(!nav) return;
+    function upd(){ document.documentElement.style.setProperty('--navh', nav.offsetHeight+'px'); }
+    upd(); window.addEventListener('resize',upd); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(upd);
+    // the router already jumped on load, before the height was known: jump again
+    var el=location.hash&&document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView({block:'start'}); })();
+
+  // cookie consent (Google Consent Mode v2)
+  (function(){
+    var box=document.getElementById('consent'), KEY='ls_consent';
+    function get(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+    function set(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+    function choose(v){ set(v); var g=(v==='granted')?'granted':'denied';
+      if(window.gtag) gtag('consent','update',{ad_storage:g,ad_user_data:g,ad_personalization:g,analytics_storage:g});
+      box.hidden=true; }
+    document.getElementById('consent-accept').addEventListener('click',function(){ choose('granted'); });
+    document.getElementById('consent-reject').addEventListener('click',function(){ choose('denied'); });
+    document.getElementById('consent-open').addEventListener('click',function(){ box.hidden=false; });
+    if(!get()) box.hidden=false;
+  })();
+
+  // e-mail chooser: every mailto link opens a small menu (Gmail / Outlook / mail app / copy)
+  (function(){
+    var menu=null, owner=null;
+    function close(){ if(menu){ menu.remove(); menu=null; } if(owner){ owner.setAttribute('aria-expanded','false'); owner.focus({preventScroll:true}); owner=null; } }
+    function open(a){
+      close();
+      var u=new URL(a.href), to=decodeURIComponent(u.pathname), su=u.searchParams.get('subject')||'';
+      var gmail='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(to)+(su?'&su='+encodeURIComponent(su):'');
+      var outlook='https://outlook.office.com/mail/deeplink/compose?to='+encodeURIComponent(to)+(su?'&subject='+encodeURIComponent(su):'');
+      menu=document.createElement('div'); menu.className='mailmenu'; menu.setAttribute('role','menu');
+      menu.innerHTML='<div class="addr"></div>'+
+        '<a role="menuitem" target="_blank" rel="noopener" data-k="gmail">Ouvrir dans Gmail</a>'+
+        '<a role="menuitem" target="_blank" rel="noopener" data-k="outlook">Ouvrir dans Outlook</a>'+
+        '<a role="menuitem" data-k="app">Utiliser ma messagerie</a>'+
+        '<button type="button" role="menuitem" data-k="copy">Copier l’adresse</button>';
+      menu.querySelector('.addr').textContent=to;
+      menu.querySelector('[data-k=gmail]').href=gmail;
+      menu.querySelector('[data-k=outlook]').href=outlook;
+      menu.querySelector('[data-k=app]').href=a.href;
+      menu.querySelector('[data-k=copy]').addEventListener('click',function(e){ var b=e.currentTarget;
+        function ok(){ b.textContent='Copié : '+to; b.classList.add('done'); setTimeout(close,1400); }
+        if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(to).then(ok,function(){ fallback(); }); } else fallback();
+        function fallback(){ var ta=document.createElement('textarea'); ta.value=to; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); ok(); }catch(_){ b.textContent=to; } ta.remove(); } });
+      menu.querySelectorAll('a[data-k]').forEach(function(x){ x.addEventListener('click',function(){ setTimeout(close,50); }); });
+      document.body.appendChild(menu);
+      var r=a.getBoundingClientRect(), w=menu.offsetWidth, h=menu.offsetHeight;
+      var left=Math.max(12, Math.min(r.left+window.scrollX, window.scrollX+document.documentElement.clientWidth-w-12));
+      var top=r.bottom+window.scrollY+8; if(r.bottom+h+8>window.innerHeight && r.top-h-8>0) top=r.top+window.scrollY-h-8;
+      menu.style.left=left+'px'; menu.style.top=top+'px';
+      owner=a; a.setAttribute('aria-expanded','true');
+      menu.querySelector('[data-k=gmail]').focus({preventScroll:true});
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href^="mailto:"]');
+      if(a && !(menu&&menu.contains(a))){ e.preventDefault(); if(owner===a){ close(); } else { open(a); } return; }
+      if(menu && !menu.contains(e.target)) close();
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+    window.addEventListener('resize',close);
+    document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){ a.setAttribute('aria-haspopup','menu'); a.setAttribute('aria-expanded','false'); });
+  })();
+})();
+</script>
+
+<script>
+  // keep the language links on the same page (hotels / apartments)
+  (function(){ function upd(){ var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb';
+    document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.setAttribute('href', a.dataset.base+(ap?'#airbnb':'')); }); }
+    window.addEventListener('hashchange', function(){ setTimeout(upd,0); }); upd();
+    function remember(l){ try{ localStorage.setItem('ls_lang', l); }catch(e){} }
+    document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.addEventListener('click', function(){ remember(a.getAttribute('lang')); }); });
+    var sel=document.querySelector('.lang-select'); if(sel) sel.addEventListener('change', function(){
+      remember(sel.options[sel.selectedIndex].textContent.toLowerCase());
+      var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb'; location.href=sel.value+(ap?'#airbnb':''); }); })();
+</script>
+</body></html>
