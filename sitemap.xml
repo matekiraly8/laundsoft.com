@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://laundsoft.com/</loc><lastmod>2026-10-16</lastmod></url>
-  <url><loc>https://laundsoft.com/privacy.html</loc><lastmod>2026-10-16</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://laundsoft.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+  </url>
+  <url>
+    <loc>https://laundsoft.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+  </url>
+  <url>
+    <loc>https://laundsoft.com/it/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://laundsoft.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://laundsoft.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://laundsoft.com/it/"/>
+  </url>
+  <url>
+    <loc>https://laundsoft.com/privacy.html</loc>
+  </url>
 </urlset>

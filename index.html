@@ -10,6 +10,10 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://laundsoft.com/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="en" href="https://laundsoft.com/">
+<link rel="alternate" hreflang="de" href="https://laundsoft.com/de/">
+<link rel="alternate" hreflang="it" href="https://laundsoft.com/it/">
+<link rel="alternate" hreflang="x-default" href="https://laundsoft.com/">
 <link rel="canonical" href="https://laundsoft.com/">
 <meta name="theme-color" content="#62a5c0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -426,6 +430,18 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
 .mailmenu a:hover,.mailmenu button:hover,.mailmenu a:focus-visible,.mailmenu button:focus-visible{background:var(--blue-pale);outline:none}
 .mailmenu .addr{padding:6px 12px 8px;font-family:var(--font-mono);font-size:12px;color:var(--muted-2);border-bottom:1px solid var(--line);margin-bottom:4px;word-break:break-all}
 .mailmenu .done{color:var(--ok-fg)}
+
+/* language switcher */
+.lang{display:flex;align-items:center;gap:2px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em}
+.lang a{color:var(--muted-2);text-decoration:none;padding:6px 7px;border-radius:6px;line-height:1}
+.lang a:hover{color:var(--fg);background:var(--mist)}
+.lang a[aria-current]{color:var(--blue-ink);background:var(--blue-pale)}
+.nav .lang-top{margin-left:2px}
+.nav .lang-select{display:none;font:500 12px/1 var(--font-mono);letter-spacing:.04em;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 4px 7px 6px;cursor:pointer}
+.nav .menu a{white-space:nowrap}
+/* German / Italian menu items are long: switch to the compact header (pill row + dropdown) below 1060px */
+@media(max-width:1060px){.nav .menu a:not(.btn){display:none} .nav .brand .tag{display:none} .nav .mobile-nav{display:flex}
+  .nav .lang-top{display:none} .nav .lang-select{display:block} .nav>.wrap:not(.mobile-nav){gap:10px}}
 </style>
 <!-- Google tag (gtag.js) · Google Ads AW-17071627520 · Consent Mode v2: denied until the visitor accepts -->
 <script>
@@ -452,6 +468,8 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
       <a href="#pricing">Pricing</a>
       <a href="#demo" class="btn sm">Book a demo</a>
     </nav>
+    <select class="lang-select" aria-label="Language"><option value="/" selected>EN</option><option value="/de/">DE</option><option value="/it/">IT</option></select>
+    <nav class="lang lang-top" aria-label="Language"><a href="/" data-base="/" hreflang="en" lang="en" aria-current="true">EN</a><a href="/de/" data-base="/de/" hreflang="de" lang="de">DE</a><a href="/it/" data-base="/it/" hreflang="it" lang="it">IT</a></nav>
   </div>
   <nav class="mobile-nav wrap" aria-label="Pages">
     <a href="#hotels" data-page="hotels">Hotel laundries</a>
@@ -1336,5 +1354,14 @@ footer .linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;te
     document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){ a.setAttribute('aria-haspopup','menu'); a.setAttribute('aria-expanded','false'); });
   })();
 })();
+</script>
+
+<script>
+  // keep the language links on the same page (hotels / apartments)
+  (function(){ function upd(){ var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb';
+    document.querySelectorAll('.lang a[data-base]').forEach(function(a){ a.setAttribute('href', a.dataset.base+(ap?'#airbnb':'')); }); }
+    window.addEventListener('hashchange', function(){ setTimeout(upd,0); }); upd();
+    var sel=document.querySelector('.lang-select'); if(sel) sel.addEventListener('change', function(){
+      var ap=(document.querySelector('.page.show')||{}).id==='page-airbnb'; location.href=sel.value+(ap?'#airbnb':''); }); })();
 </script>
 </body></html>
